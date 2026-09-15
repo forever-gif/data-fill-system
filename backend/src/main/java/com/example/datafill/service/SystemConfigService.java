@@ -103,37 +103,27 @@ public class SystemConfigService {
     }
 
     public void updateConfig(String key, Object value) {
+        updateConfig(key, value, null);
+    }
 
+    public void updateConfig(String key, Object value, String remark) {
         try {
-
             String jsonVal = objectMapper.writeValueAsString(value);
-
             SystemConfig config = configMapper.selectOne(new LambdaQueryWrapper<SystemConfig>().eq(SystemConfig::getConfigKey, key));
-
             if (config == null) {
-
                 config = new SystemConfig();
-
                 config.setConfigKey(key);
-
                 config.setConfigValue(jsonVal);
-
+                if (remark != null) config.setRemark(remark);
                 configMapper.insert(config);
-
             } else {
-
                 config.setConfigValue(jsonVal);
-
+                if (remark != null) config.setRemark(remark);
                 configMapper.updateById(config);
-
             }
-
         } catch (Exception e) {
-
             throw new RuntimeException("Save config error", e);
-
         }
-
     }
 
     private String getConfigValue(String key) {
@@ -144,10 +134,18 @@ public class SystemConfigService {
 
     }
 
+    public <T> T getConfig(String key, Class<T> clazz) {
+        String val = getConfigValue(key);
+        if (val == null || val.isBlank()) return null;
+        try {
+            return objectMapper.readValue(val, clazz);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public List<SystemConfig> getAllConfigs() {
-
         return configMapper.selectList(null);
-
     }
 
 }

@@ -585,19 +585,40 @@ public class DynamicTableDdlService {
 
         java.util.Set<String> physicalColumns = loadPhysicalColumns(schema, form.getTableName());
 
+        // 检查是否绑定了物理表自有的非 id 主键 (如 report_id)
+        boolean hasCustomPk = form.getPkColumn() != null 
+                && !form.getPkColumn().trim().isEmpty() 
+                && !"id".equalsIgnoreCase(form.getPkColumn().trim());
+
         java.util.Set<String> seenColumns = new java.util.HashSet<>();
+        List<FieldDef> validFields = new ArrayList<>();
         for (FieldDef field : fields) {
             String columnName = normalizeColumnName(field.getColumnName());
+            if (columnName == null || columnName.trim().isEmpty()) {
+                continue;
+            }
             field.setColumnName(columnName);
-            if (columnName == null || !columnName.matches("^[a-zA-Z0-9_]+$")) {
+            if (!columnName.matches("^[a-zA-Z0-9_]+$")) {
                 throw new RuntimeException("列名只能包含字母、数字和下划线: " + columnName);
             }
             if (!seenColumns.add(columnName.toLowerCase())) {
                 throw new RuntimeException("检测到重复的英文字段名: " + columnName);
             }
             if (!physicalColumns.contains(columnName.toLowerCase())) {
+                // 🌟 核心规则：只有绑定了物理表中的自有主键时，才不识别/跳过物理表中不存在的 id 字段
+                if (hasCustomPk && "id".equalsIgnoreCase(columnName)) {
+                    log.info("物理表 {}.{} 已绑定自有主键 [{}]，自动跳过物理表中不存在的默认 id 字段", schema, form.getTableName(), form.getPkColumn());
+                    continue;
+                }
+                // 其他所有系统审计字段与业务字段，若物理表中不存在，严格抛出异常！
                 throw new RuntimeException("已有表中不存在字段: " + columnName);
             }
+            validFields.add(field);
+        }
+        fields = validFields;
+
+        if (fields.isEmpty()) {
+            throw new RuntimeException("物理表中未识别到有效的业务字段");
         }
 
         form.setForms(writeFieldsJson(fields));

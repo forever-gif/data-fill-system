@@ -1,22 +1,26 @@
 <template>
   <div class="form-list-page">
     <div class="page-layout">
-      <el-card class="folder-card" shadow="never">
-        <div class="folder-header">
+      <!-- 左侧目录侧边栏 (1:1 像素级对齐报表资产) -->
+      <div class="folder-sidebar-card">
+        <!-- 顶部轻量级标题区 (支持新建目录) -->
+        <div class="folder-header-clean">
           <span class="folder-header-title">模板目录</span>
-          <el-button v-if="isAdmin" type="primary" link icon="Plus" @click="createFolder()">新建</el-button>
+          <el-button v-if="isAdmin" type="primary" link icon="Plus" class="add-folder-btn" @click="createFolder()">新建</el-button>
         </div>
 
         <div class="folder-tree-panel" v-loading="folderLoading">
+          <!-- 全部模板 根节点 (纯净轻蓝胶囊，无臃肿数字气泡) -->
           <div
             class="folder-all-item"
             :class="{ active: !selectedFolderId }"
             @click="selectAllFolders"
           >
-            <span>全部模板</span>
-            <el-tag size="small" round>{{ allTemplateCount }}</el-tag>
+            <el-icon class="folder-root-icon"><Folder /></el-icon>
+            <span class="folder-root-name">全部模板</span>
           </div>
 
+          <!-- 优雅目录树 (纯净无数字气泡，悬停显操作按钮) -->
           <el-tree
             v-if="folderTree.length > 0"
             ref="folderTreeRef"
@@ -28,24 +32,34 @@
             :props="{ label: 'name', children: 'children' }"
             :current-node-key="selectedFolderId || undefined"
             :allow-drop="allowFolderDrop"
+            class="custom-report-tree"
             @node-click="handleFolderSelect"
             @node-contextmenu="handleFolderContextMenu"
             @node-drop="handleFolderDrop"
           >
-            <template #default="{ data }">
-              <div class="folder-node">
-                <div class="folder-node-main">
-                  <el-icon class="folder-node-icon"><Folder /></el-icon>
-                  <!-- 增加 Tooltip：当目录名过长显示省略号时，悬停可查看完整名称 -->
-                  <el-tooltip :content="data.name" placement="top" :show-after="200" :enterable="false" :disabled="!data.name">
-                    <span class="folder-node-name">{{ data.name }}</span>
+            <template #default="{ node, data }">
+              <div class="tree-node-row">
+                <div class="tree-node-left">
+                  <el-icon class="node-folder-icon">
+                    <component :is="node.expanded ? 'FolderOpened' : 'Folder'" />
+                  </el-icon>
+                  <el-tooltip :content="data.name" placement="top" :show-after="300" :disabled="!data.name">
+                    <span class="node-title-text">{{ data.name }}</span>
                   </el-tooltip>
-                  <el-tag size="small" round class="folder-count-tag">{{ data.templateCount || 0 }}</el-tag>
                 </div>
-                <div v-if="isAdmin && !data.systemNode" class="folder-node-actions">
-                  <el-tooltip content="新增子目录" placement="top"><el-button link type="primary" icon="Plus" @click.stop="createFolder(data)" /></el-tooltip>
-                  <el-tooltip content="重命名" placement="top"><el-button link type="primary" icon="Edit" @click.stop="renameFolder(data)" /></el-tooltip>
-                  <el-tooltip content="删除目录" placement="top"><el-button link type="danger" icon="Delete" @click.stop="deleteFolder(data)" /></el-tooltip>
+                <div v-if="isAdmin && !data.systemNode" class="folder-node-actions" @click.stop>
+                  <el-dropdown trigger="click" @command="(cmd) => handleFolderCommand(cmd, data)">
+                    <el-button link class="folder-more-btn" title="更多操作">
+                      <el-icon><MoreFilled /></el-icon>
+                    </el-button>
+                    <template #dropdown>
+                      <el-dropdown-menu>
+                        <el-dropdown-item command="create" :icon="Plus">新增子目录</el-dropdown-item>
+                        <el-dropdown-item command="rename" :icon="Edit">重命名</el-dropdown-item>
+                        <el-dropdown-item command="delete" :icon="Delete" divided style="color: #ef4444;">删除目录</el-dropdown-item>
+                      </el-dropdown-menu>
+                    </template>
+                  </el-dropdown>
                 </div>
               </div>
             </template>
@@ -64,65 +78,66 @@
           <button class="context-menu-item danger" @click="handleContextMenuAction('delete')">删除目录</button>
         </div>
 
-        <!-- 侧边栏宽度调节手柄：位于卡片最右侧的透明条，允许鼠标拖拽缩放 -->
+        <!-- 宽度拖拽调节手柄 -->
         <div class="sidebar-resizer" @mousedown="startSidebarResize"></div>
-      </el-card>
+      </div>
 
+      <!-- 右侧主内容卡片面板 (1:1 像素级对齐报表资产) -->
       <div class="content-panel">
-        <div class="view-header">
-          <div class="view-header-left">
-            <div class="view-title-row">
-              <span class="view-title">全部模板</span>
-              <el-tag type="success" effect="plain" round size="small" class="count-tag">
+        <div class="main-table-card">
+          <!-- 顶部搜索与多维筛选栏 (两端排版：搜索条件靠左，按钮操作靠右) -->
+          <div class="table-search-bar">
+            <!-- 左侧：当前目录名称 + 模板数量徽标 -->
+            <div class="view-title-area">
+              <span class="view-title">{{ selectedFolderLabel || '全部模板' }}</span>
+              <el-tag type="primary" effect="plain" round size="small" class="count-tag">
                 共 {{ filteredForms.length }} 个模板
               </el-tag>
             </div>
-          </div>
-          
-          <div class="view-header-right">
-            <div class="search-bar-integrated">
+
+            <!-- 右侧：紧凑完整的搜索与批量操作栏 -->
+            <div class="search-bar-right">
               <el-input
                 v-model="searchQuery"
-                placeholder="搜索模板名称或物理表名..."
+                placeholder="搜索模板名称..."
                 prefix-icon="Search"
                 clearable
-                class="search-input-compact"
+                class="search-input-box"
                 @keyup.enter="handleFilter"
                 @clear="handleFilter"
               />
-              <el-select v-model="statusFilter" placeholder="状态" clearable class="status-select-compact">
+              <el-select v-model="statusFilter" placeholder="状态" clearable class="filter-status-box">
                 <el-option label="所有状态" value="" />
                 <el-option label="运行中" value="ACTIVE" />
                 <el-option label="已过期" value="EXPIRED" />
                 <el-option label="待发布" value="DISABLED" />
               </el-select>
-              <el-button type="primary" @click="handleFilter">查询</el-button>
-              <el-button @click="resetFilter">重置</el-button>
-              <div class="divider"></div>
+              <el-button type="primary" class="action-btn search-submit-btn" @click="handleFilter">查询</el-button>
+              <el-button class="action-btn" @click="resetFilter">重置</el-button>
+              <div v-if="isAdmin" class="divider"></div>
               <el-button
                 v-if="isAdmin"
                 type="warning"
                 plain
-                icon="Rank"
-                :disabled="selectedFormIds.length === 0"
+                class="action-btn batch-move-btn"
                 @click="openBatchMoveDialog"
               >
-                批量移动
+                <el-icon class="el-icon--left"><Rank /></el-icon> 批量移动<template v-if="selectedFormIds.length > 0"> ({{ selectedFormIds.length }})</template>
               </el-button>
             </div>
           </div>
-        </div>
 
-        <el-card class="table-card" shadow="never">
+          <!-- 数据表格 -->
           <el-table
             :data="paginatedForms"
             style="width: 100%"
             v-loading="loading"
             @selection-change="handleSelectionChange"
             row-class-name="modern-table-row"
+            header-cell-class-name="modern-table-header"
           >
             <el-table-column v-if="isAdmin" type="selection" width="48" align="center" />
-            <el-table-column prop="name" label="模板名称" min-width="220" show-overflow-tooltip>
+            <el-table-column prop="name" label="模板名称" min-width="280" show-overflow-tooltip>
               <template #default="scope">
                 <div class="form-name-cell">
                   <div class="icon-avatar">
@@ -133,7 +148,7 @@
               </template>
             </el-table-column>
             
-            <el-table-column prop="folderId" label="所属目录" min-width="130" show-overflow-tooltip>
+            <el-table-column prop="folderId" label="所属目录" min-width="200" show-overflow-tooltip>
               <template #default="scope">
                 <div class="folder-path-cell">
                   <el-icon size="12"><Folder /></el-icon>
@@ -141,14 +156,8 @@
                 </div>
               </template>
             </el-table-column>
-            
-            <el-table-column prop="tableName" label="物理表名" min-width="160" show-overflow-tooltip>
-              <template #default="scope">
-                <code class="table-code">{{ scope.row.tableName }}</code>
-              </template>
-            </el-table-column>
   
-            <el-table-column prop="status" label="状态" width="100" align="center">
+            <el-table-column prop="status" label="状态" width="110" align="center">
               <template #default="scope">
                 <el-tag
                   :type="scope.row.status === 'ACTIVE' ? 'success' : (scope.row.status === 'EXPIRED' ? 'danger' : 'info')"
@@ -162,7 +171,7 @@
               </template>
             </el-table-column>
   
-            <el-table-column prop="deadline" label="截止时间" min-width="140">
+            <el-table-column prop="deadline" label="截止时间" min-width="170">
               <template #default="scope">
                 <div class="time-cell">
                   <el-icon v-if="scope.row.deadline" size="14"><Timer /></el-icon>
@@ -171,7 +180,7 @@
               </template>
             </el-table-column>
   
-            <el-table-column prop="creator" label="创建人" width="120" show-overflow-tooltip>
+            <el-table-column prop="creator" label="创建人" min-width="130" show-overflow-tooltip>
               <template #default="scope">
                 <span class="creator-text">{{ scope.row.creator || 'admin' }}</span>
               </template>
@@ -212,7 +221,7 @@
               @current-change="handlePaginationChange"
             />
           </div>
-        </el-card>
+        </div>
       </div>
     </div>
 
@@ -298,9 +307,11 @@
 import { ref, onMounted, onBeforeUnmount, inject, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Document, Folder, Timer, User, WarningFilled, InfoFilled, Menu, Box, Plus, Edit, Delete, Rank, List, MoreFilled } from '@element-plus/icons-vue'
+import {
+  Document, Folder, FolderOpened, Timer, User, WarningFilled,
+  InfoFilled, Menu, Box, Plus, Edit, Delete, Rank, List, MoreFilled, Search
+} from '@element-plus/icons-vue'
 import axios from 'axios'
-
 const route = useRoute()
 const router = useRouter()
 const currentUser = inject('currentUser', ref(''))
@@ -336,7 +347,7 @@ const contextMenu = ref({
 })
 
 // 侧边栏宽度动态调节逻辑
-const sidebarWidth = ref(280) // 初始宽度
+const sidebarWidth = ref(150) // 极致紧凑宽度 (从 200px 进一步收窄至 150px，彻底消除空白)
 const isResizing = ref(false) // 是否正在调整大小
 
 // 鼠标按下缩放条时触发
@@ -355,8 +366,8 @@ const handleSidebarResize = (e) => {
   if (!isResizing.value) return
   // 计算鼠标当前位置相对于页面的宽度（减去可能的左侧偏移量）
   const newWidth = e.clientX - 24 
-  // 限制宽度范围：最小 180px，最大 600px
-  if (newWidth > 180 && newWidth < 600) {
+  // 限制宽度范围：最小 120px，最大 350px
+  if (newWidth >= 120 && newWidth <= 350) {
     sidebarWidth.value = newWidth
   }
 }
@@ -577,6 +588,17 @@ const handleContextMenuAction = async (action) => {
   }
 }
 
+const handleFolderCommand = async (command, folder) => {
+  if (!folder) return
+  if (command === 'create') {
+    await createFolder(folder)
+  } else if (command === 'rename') {
+    await renameFolder(folder)
+  } else if (command === 'delete') {
+    await deleteFolder(folder)
+  }
+}
+
 const createFolder = async (parentNode = null) => {
   try {
     const result = await ElMessageBox.prompt('请输入目录名称', parentNode ? `在“${parentNode.name}”下新建目录` : '新建根目录', {
@@ -655,6 +677,10 @@ const openMoveDialog = (form) => {
 }
 
 const openBatchMoveDialog = () => {
+  if (selectedFormIds.value.length === 0) {
+    ElMessage.warning('请先勾选需要移动的模板！')
+    return
+  }
   batchMoveTargetFolderId.value = ''
   batchMoveDialogVisible.value = true
 }
@@ -794,120 +820,191 @@ onBeforeUnmount(() => {
   animation: fadeIn 0.4s ease-out;
 }
 
+.form-list-page {
+  width: 100%;
+  padding: 0 4px;
+  box-sizing: border-box;
+}
+
 .page-layout {
+  width: 100%;
   display: flex;
   gap: 16px;
   align-items: flex-start;
+  box-sizing: border-box;
 }
 
-.folder-card {
+/* 左侧目录侧边栏 (与报表资产完全一致) */
+.folder-sidebar-card {
   position: relative;
   width: v-bind('sidebarWidth + "px"');
-  min-width: 180px;
-  max-width: 600px;
+  min-width: 120px;
+  max-width: 350px;
   flex-shrink: 0;
-  border-radius: 16px;
-  overflow: hidden;
+  border-radius: 12px;
   border: 1px solid #f1f5f9;
   background: white;
-  transition: all 0.3s;
+  padding: 12px 6px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s;
 }
 
-.folder-card:hover {
-  box-shadow: 0 12px 24px -10px rgba(15, 23, 42, 0.1);
-}
-
-.folder-header {
+.folder-header-clean {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 12px 12px;
+  padding: 4px 8px 8px 8px;
   border-bottom: 1px solid #f1f5f9;
   margin-bottom: 8px;
 }
 
 .folder-header-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
-  color: #1e293b;
-  letter-spacing: 0.5px;
+  color: #475569;
+  letter-spacing: 0.3px;
 }
 
+.add-folder-btn {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 0;
+}
+
+.folder-tree-panel {
+  width: 100%;
+}
+
+/* 全部模板 根项 */
 .folder-all-item {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px 14px;
+  gap: 8px;
+  padding: 6px 8px;
   cursor: pointer;
-  color: #64748b;
+  color: #334155;
   margin-bottom: 4px;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 13.5px;
+  font-size: 13px;
   border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.folder-root-icon {
+  font-size: 16px;
+  color: #3b82f6;
+}
+
+.folder-root-name {
+  font-weight: 600;
 }
 
 .folder-all-item:hover {
   background: #f1f5f9;
-  color: #0f172a;
+  color: #2563eb;
 }
 
 .folder-all-item.active {
-  color: white;
+  color: #2563eb;
   font-weight: 600;
-  background: var(--primary-color);
-  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+  background: #eff6ff;
 }
 
-.folder-node {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding-right: 4px;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.folder-node-main {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-}
-
-.folder-node-icon {
-  color: #94a3b8;
-  font-size: 16px;
-}
-
-.folder-node-name {
-  display: block;
-  flex: 1;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* 树组件定制 (与报表资产完全一致) */
+.custom-report-tree {
+  background: transparent;
   color: #334155;
 }
 
-.folder-node-actions {
-  display: none; /* 默认隐藏操作按钮，腾出空间给名称 */
-  align-items: center;
-  gap: 2px;
-  flex-shrink: 0;
-  padding-left: 8px;
+.custom-report-tree :deep(.el-tree-node__content) {
+  height: 34px;
+  padding-right: 6px;
+  border-radius: 8px;
+  margin-bottom: 2px;
+  transition: all 0.2s;
 }
 
-/* 仅在鼠标悬停在目录项上时显示按钮 */
-.folder-node:hover .folder-node-actions {
+.custom-report-tree :deep(.el-tree-node__content:hover) {
+  background-color: #f1f5f9;
+}
+
+.custom-report-tree :deep(.el-tree-node.is-current > .el-tree-node__content) {
+  background-color: #eff6ff !important;
+  color: #2563eb !important;
+  font-weight: 600;
+}
+
+.custom-report-tree :deep(.el-tree-node__expand-icon) {
+  font-size: 12px;
+  color: #94a3b8;
+  padding: 6px;
+}
+
+.custom-report-tree :deep(.el-tree-node__expand-icon.is-leaf) {
+  color: transparent;
+}
+
+.tree-node-row {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-width: 0;
 }
 
-.folder-count-tag {
-  flex-shrink: 0; /* 防止数量标签被挤压 */
+.tree-node-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.node-folder-icon {
+  font-size: 16px;
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.custom-report-tree :deep(.el-tree-node.is-current .node-folder-icon) {
+  color: #2563eb;
+}
+
+.node-title-text {
+  font-size: 13.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: inherit;
+}
+
+.folder-node-actions {
+  display: none;
+  align-items: center;
+  flex-shrink: 0;
+  padding-left: 2px;
+}
+
+.folder-more-btn {
+  padding: 2px;
+  height: 20px;
+  width: 20px;
+  border-radius: 4px;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.folder-more-btn:hover {
+  background-color: #e2e8f0;
+  color: #1e293b;
+}
+
+.tree-node-row:hover .folder-node-actions {
+  display: flex;
 }
 
 /* 侧边栏缩放手柄样式 */
@@ -915,16 +1012,14 @@ onBeforeUnmount(() => {
   position: absolute;
   top: 0;
   right: 0;
-  width: 4px; /* 响应区域宽度 */
+  width: 4px;
   height: 100%;
   cursor: col-resize;
-  transition: background 0.2s;
   z-index: 10;
 }
 
-/* 缩放手柄悬停或激活时的提示色 */
-.sidebar-resizer:hover, .sidebar-resizer:active {
-  background: var(--primary-color);
+.sidebar-resizer:hover {
+  background: #2563eb;
   opacity: 0.3;
 }
 
@@ -959,49 +1054,89 @@ onBeforeUnmount(() => {
   color: #dc2626;
 }
 
+/* 右侧内容区面板 (与报表资产完全一致) */
 .content-panel {
   flex: 1;
   min-width: 0;
   width: 0;
-  padding-bottom: 24px;
 }
 
-.view-header {
+.main-table-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #f1f5f9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  padding: 16px 20px;
+  box-sizing: border-box;
+}
+
+/* 顶部搜索过滤栏 (两端排版：左侧目录标题徽标，右侧整套紧凑搜索区) */
+.table-search-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 16px;
   margin-bottom: 16px;
-  background: white;
-  padding: 12px 20px;
-  border-radius: 12px;
-  border: 1px solid #f1f5f9;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 2px;
 }
 
-.view-title-row {
+.view-title-area {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
 .view-title {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   color: #1e293b;
+  letter-spacing: -0.01em;
 }
 
-.search-bar-integrated {
+.count-tag {
+  background-color: #eff6ff !important;
+  border-color: #dbeafe !important;
+  color: #2563eb !important;
+  font-weight: 500;
+  padding: 0 10px;
+  height: 24px;
+  line-height: 22px;
+}
+
+.search-bar-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
-.search-input-compact {
-  width: 240px;
+.search-input-box {
+  width: 250px;
+  min-width: 180px;
+  flex-shrink: 1;
 }
 
-.status-select-compact {
-  width: 110px;
+.filter-status-box {
+  width: 115px;
+  min-width: 95px;
+  flex-shrink: 1;
+}
+
+.action-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.search-submit-btn {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+  font-weight: 500;
+  flex-shrink: 0;
 }
 
 .divider {
@@ -1009,15 +1144,24 @@ onBeforeUnmount(() => {
   height: 20px;
   background: #e2e8f0;
   margin: 0 4px;
+  flex-shrink: 0;
 }
 
-.table-card {
-  border-radius: 16px;
-  border: 1px solid #f1f5f9;
-  box-shadow: 0 4px 20px -5px rgba(15, 23, 42, 0.04);
-  padding: 4px;
+.batch-move-btn {
+  background-color: #fffaf0 !important;
+  border-color: #fed7aa !important;
+  color: #ea580c !important;
+  font-weight: 500;
+  flex-shrink: 0;
 }
 
+.batch-move-btn:hover {
+  background-color: #ffedd5 !important;
+  border-color: #fdba74 !important;
+  color: #c2410c !important;
+}
+
+/* 表格定制 */
 .modern-table-row {
   transition: background-color 0.2s;
 }
@@ -1030,18 +1174,18 @@ onBeforeUnmount(() => {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background: #f1f5f9;
+  background: #eff6ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #64748b;
+  color: #2563eb;
   flex-shrink: 0;
   transition: all 0.2s;
 }
 
 .modern-table-row:hover .icon-avatar {
-  background: #e2e8f0;
-  color: var(--primary-color);
+  background: #dbeafe;
+  color: #1d4ed8;
 }
 
 .form-name-cell {
@@ -1051,16 +1195,16 @@ onBeforeUnmount(() => {
 }
 
 .name-text {
-  font-weight: 600;
-  color: #1e293b;
-  font-size: 14px;
+  font-weight: 400; /* 模板名称不用加粗 */
+  color: #0f172a;
+  font-size: 13.5px;
 }
 
 .folder-path-cell {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #64748b;
+  color: #334155; /* 所属目录颜色加深 */
   font-size: 13px;
 }
 
@@ -1070,8 +1214,8 @@ onBeforeUnmount(() => {
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 12px;
-  color: #475569;
-  border: 1px solid #f1f5f9;
+  color: #334155;
+  border: 1px solid #e2e8f0;
 }
 
 .status-tag {
@@ -1086,12 +1230,12 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #64748b;
+  color: #334155; /* 截止时间颜色加深 */
   font-size: 13px;
 }
 
 .creator-text {
-  color: #94a3b8;
+  color: #1e293b; /* 创建人颜色加深 */
   font-size: 13px;
 }
 
@@ -1102,57 +1246,20 @@ onBeforeUnmount(() => {
   gap: 8px;
 }
 
-:deep(.el-table__header-wrapper th) {
-  background-color: #f8fafc;
-  color: #475569;
-  font-weight: 600;
-  font-size: 13px;
-  height: 48px;
+:deep(.el-table__header-wrapper th),
+:deep(.modern-table-header) {
+  background-color: #f8fafc !important;
+  color: #0f172a !important; /* 表头颜色深黑清晰 */
+  font-weight: 700 !important; /* 表头加粗 */
+  font-size: 13.5px !important;
+  height: 46px;
 }
 
-:deep(.el-tree-node__content) {
-  min-height: 34px;
-  border-radius: 6px;
-  padding-right: 6px;
-}
-
-:deep(.el-tree) {
-  overflow-x: auto;
-}
-
-:deep(.el-tree-node) {
-  width: max-content;
-  min-width: 100%;
-}
-
-:deep(.el-tree-node > .el-tree-node__content) {
-  overflow: hidden;
-}
-
-:deep(.el-tree .el-scrollbar__wrap) {
-  overflow-x: hidden !important;
-}
-
-@media (max-width: 1280px) {
-  .page-layout {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .folder-card {
-    width: 100%;
-    margin-bottom: 16px;
-  }
-  .folder-tree-panel {
-    max-height: 200px;
-  }
-  
-  /* 深度覆盖 Element Plus 表格固定列的宽度，防止留白过大 */
-  :deep(.el-table__fixed-right) {
-    height: 100% !important;
-  }
-  :deep(.el-table__fixed-column--right) {
-    background-color: #fff !important;
-  }
+.pagination-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-top: 12px;
 }
 
 @media (max-width: 768px) {

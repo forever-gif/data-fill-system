@@ -1,7 +1,7 @@
 <template>
   <el-config-provider :locale="zhCn">
     <div class="app-wrapper">
-      <header v-if="!isEmbedMode && currentUser && isRegistered !== false && isAdmin" class="app-header">
+      <header v-if="!isEmbedMode && currentUser && isRegistered !== false && isAdmin && !isReportCatalogRoute" class="app-header">
         <div class="header-content">
           <el-menu 
             mode="horizontal" 
@@ -22,7 +22,7 @@
         </div>
       </header>
       
-      <main class="main-body" :class="{ 'is-embedded': isEmbedMode }">
+      <main class="main-body" :class="{ 'is-embedded': isEmbedMode || isReportCatalogRoute }">
         <div class="container">
           <template v-if="currentUser && (isRegistered === true || loading || isRegistered === null)">
             <div v-if="loading || isRegistered === null" class="loading-state">
@@ -30,7 +30,9 @@
             </div>
             <router-view v-else v-slot="{ Component }">
               <transition name="fade-transform" mode="out-in">
-                <component :is="Component" />
+                <keep-alive include="ReportCatalogList">
+                  <component :is="Component" />
+                </keep-alive>
               </transition>
             </router-view>
           </template>
@@ -203,6 +205,11 @@ const isAdmin = computed(() => {
   return isKnownAdmin(currentUser.value)
 })
 provide('isAdmin', isAdmin)
+
+// 报表资产专属路由判定（独立单页面模式，隐藏填报系统的顶部导航栏）
+const isReportCatalogRoute = computed(() => {
+  return route.path.startsWith('/report-catalog') || route.path.startsWith('/report-detail')
+})
 
 // Embed mode detection
 const isEmbedMode = ref(window.location.search.includes('embed=true') || window.location.hash.includes('embed=true'))

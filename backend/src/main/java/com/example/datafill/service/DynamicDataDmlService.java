@@ -1265,7 +1265,14 @@ public class DynamicDataDmlService {
         List<Object> actionArgs = new ArrayList<>(convertedIds);
         
         if (hasDeleteFlag && !isHardDeleteMode) {
-            actionSql.append(String.format("UPDATE %s SET delete_flag=TRUE WHERE \"%s\" IN (%s)", SqlUtil.quoteTable(fullTableName), pk, ps));
+            StringJoiner setClause = new StringJoiner(", ");
+            setClause.add("\"delete_flag\" = TRUE");
+            for (String col : UPDATE_FIELDS) {
+                if (hasColumn(physicalColumns, col)) {
+                    setClause.add("\"" + col + "\" = CURRENT_TIMESTAMP");
+                }
+            }
+            actionSql.append(String.format("UPDATE %s SET %s WHERE \"%s\" IN (%s)", SqlUtil.quoteTable(fullTableName), setClause.toString(), pk, ps));
         } else {
             actionSql.append(String.format("DELETE FROM %s WHERE \"%s\" IN (%s)", SqlUtil.quoteTable(fullTableName), pk, ps));
         }
@@ -1327,7 +1334,14 @@ public class DynamicDataDmlService {
         }
 
         if (hasColumn(physicalColumns, "delete_flag") && !isHardDeleteMode) {
-            jdbcTemplate.update(String.format("UPDATE %s SET delete_flag=TRUE %s", SqlUtil.quoteTable(fullTableName), where), args.toArray());
+            StringJoiner setClause = new StringJoiner(", ");
+            setClause.add("\"delete_flag\" = TRUE");
+            for (String col : UPDATE_FIELDS) {
+                if (hasColumn(physicalColumns, col)) {
+                    setClause.add("\"" + col + "\" = CURRENT_TIMESTAMP");
+                }
+            }
+            jdbcTemplate.update(String.format("UPDATE %s SET %s %s", SqlUtil.quoteTable(fullTableName), setClause.toString(), where), args.toArray());
         } else {
             jdbcTemplate.update(String.format("DELETE FROM %s %s", SqlUtil.quoteTable(fullTableName), where), args.toArray());
         }

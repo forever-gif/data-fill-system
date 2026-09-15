@@ -1220,13 +1220,10 @@ const handlePkConflictConfirm = async () => {
     mappedFields.sort((a, b) => {
       const aName = (a.columnName || '').toLowerCase()
       const bName = (b.columnName || '').toLowerCase()
-      if (aName === 'id') return -1
-      if (bName === 'id') return 1
+      if (aName === targetPk.toLowerCase() || aName === 'id') return -1
+      if (bName === targetPk.toLowerCase() || bName === 'id') return 1
       return 0
     })
-    
-    ensureSystemFields(mappedFields)
-    fields.value = mappedFields
     
     formMeta.tableName = info.tableName
     formMeta.schemaName = info.schemaName
@@ -1237,8 +1234,16 @@ const handlePkConflictConfirm = async () => {
     formMeta.insertDtColumn = res.detectedInsertDt
     formMeta.updateDtColumn = res.detectedUpdateDt
     formMeta.deleteFlagColumn = res.detectedDeleteFlag
-    
     formMeta.pkColumn = targetPk
+
+    // 🌟 如果选定绑定物理主键（如 report_id），且物理表本身没有 id 列，严格排除伪造的 id 字段
+    const hasPhysicalId = res.originalHeaders && res.originalHeaders.some(h => (h || '').toLowerCase() === 'id')
+    if (targetPk.toLowerCase() !== 'id' && !hasPhysicalId) {
+      mappedFields = mappedFields.filter(f => (f.columnName || '').toLowerCase() !== 'id')
+    }
+
+    ensureSystemFields(mappedFields)
+    fields.value = mappedFields
     
     if (needAutoRepair) {
       ElMessage.success('表结构识别成功，正在后台为您自动补齐自增 id 主键...')
@@ -1785,9 +1790,6 @@ const inspectExistingTable = async (sName, tName, silent = false) => {
         return 0
       })
       
-      ensureSystemFields(mappedFields)
-      fields.value = mappedFields
-      
       formMeta.tableName = tableName
       formMeta.schemaName = schemaName
       bindExistingTableMode.value = true
@@ -1797,8 +1799,15 @@ const inspectExistingTable = async (sName, tName, silent = false) => {
       formMeta.insertDtColumn = res.data.detectedInsertDt
       formMeta.updateDtColumn = res.data.detectedUpdateDt
       formMeta.deleteFlagColumn = res.data.detectedDeleteFlag
-      
       formMeta.pkColumn = res.data.detectedPrimaryKey || 'id'
+
+      const hasPhysicalId = res.data.originalHeaders && res.data.originalHeaders.some(h => (h || '').toLowerCase() === 'id')
+      if (formMeta.pkColumn.toLowerCase() !== 'id' && !hasPhysicalId) {
+        mappedFields = mappedFields.filter(f => (f.columnName || '').toLowerCase() !== 'id')
+      }
+
+      ensureSystemFields(mappedFields)
+      fields.value = mappedFields
 
       if (!silent) {
         ElMessage.success('已识别已有表结构，发布时将直接绑定该表')
@@ -2045,15 +2054,17 @@ const isSystemManagedField = (field) => {
 const ensureSystemFields = (fieldsArray) => {
   if (!fieldsArray) return
 
-  // 检查当前物理表/表单是否有自己的业务主键
-  const hasCustomPk = fieldsArray.some(f => 
-    f.isPk || 
-    f.pk || 
-    ((f.columnName || '').toLowerCase() === (formMeta.pkColumn || '').toLowerCase() && (f.columnName || '').toLowerCase() !== 'id') ||
-    ((f.columnName || '').toLowerCase().endsWith('_id') && (f.columnName || '').toLowerCase() !== 'id')
-  )
+  // 检查当前物理表/表单是否绑定了自有物理主键 (如 report_id)
+  const hasCustomPk = 
+    (formMeta.pkColumn && formMeta.pkColumn.toLowerCase() !== 'id') ||
+    fieldsArray.some(f => 
+      f.isPk || 
+      f.pk || 
+      ((f.columnName || '').toLowerCase() === (formMeta.pkColumn || '').toLowerCase() && (f.columnName || '').toLowerCase() !== 'id') ||
+      ((f.columnName || '').toLowerCase().endsWith('_id') && (f.columnName || '').toLowerCase() !== 'id')
+    )
 
-  // 如果已经有了非 id 的业务主键，则彻底清理掉之前误追加的假 id 字段
+  // 🌟 核心规则：只有绑定了物理表中的自有主键时，才彻底清理掉默认的 id 字段
   if (hasCustomPk) {
     const bogusIdIdx = fieldsArray.findIndex(f => (f.columnName || '').toLowerCase() === 'id' && !f.isPk && !f.pk)
     if (bogusIdIdx !== -1) {
@@ -2061,8 +2072,9 @@ const ensureSystemFields = (fieldsArray) => {
     }
   }
 
+  // 🌟 其他系统审计字段（创建时间、更新时间、导入用户、删除标记）仍然是必需支持的！
   const systemFields = [
-    // 只有在完全没有其他业务主键时，才补充默认的 ID 系统列
+    // 只有在完全没有绑定自有主键时，才补充默认的 ID 系统列
     ...(!hasCustomPk ? [{ name: 'ID', columnName: 'id', dbType: 'INTEGER', type: 'int', systemLocked: true, required: true, hideInForm: true, hideInList: true }] : []),
     { name: '创建时间', columnName: 'w_insert_dt', dbType: 'TIMESTAMP', type: 'datetime', systemLocked: true, required: false, hideInForm: true, hideInList: true },
     { name: '更新时间', columnName: 'w_update_dt', dbType: 'TIMESTAMP', type: 'datetime', systemLocked: true, required: false, hideInForm: true, hideInList: true },
@@ -2070,26 +2082,30 @@ const ensureSystemFields = (fieldsArray) => {
     { name: '删除标记', columnName: 'delete_flag', dbType: 'BOOLEAN', type: 'boolean', systemLocked: true, required: true, hideInForm: true, hideInList: true }
   ]
 
-  systemFields.forEach(sf => {
-    if (!fieldsArray.some(f => (f.columnName || '').toLowerCase() === sf.columnName.toLowerCase())) {
-      fieldsArray.push({
-        _uid: _fieldUidCounter++,
-        ...sf,
-        originalColumnName: sf.columnName,
-        filterType: 'input',
-        filterOptions: [],
-        filterOptionsSql: '',
-        _filterSource: 'manual',
-        visibleEmails: []
-      })
-    }
-  })
+  // 非绑定已有表模式下，如果缺少系统字段则自动在表单中补齐
+  if (!bindExistingTableMode.value) {
+    systemFields.forEach(sf => {
+      if (!fieldsArray.some(f => (f.columnName || '').toLowerCase() === sf.columnName.toLowerCase())) {
+        fieldsArray.push({
+          _uid: _fieldUidCounter++,
+          ...sf,
+          originalColumnName: sf.columnName,
+          filterType: 'input',
+          filterOptions: [],
+          filterOptionsSql: '',
+          _filterSource: 'manual',
+          visibleEmails: []
+        })
+      }
+    })
+  }
   
   // 确保主键或 ID 放在第一行
-  const idIdx = fieldsArray.findIndex(f => (f.columnName || '').toLowerCase() === 'id' || f.isPk || f.pk)
-  if (idIdx > 0) {
-    const idField = fieldsArray.splice(idIdx, 1)[0]
-    fieldsArray.unshift(idField)
+  const pkColName = (formMeta.pkColumn || 'id').toLowerCase()
+  const pkIdx = fieldsArray.findIndex(f => (f.columnName || '').toLowerCase() === pkColName || (f.columnName || '').toLowerCase() === 'id' || f.isPk || f.pk)
+  if (pkIdx > 0) {
+    const pkField = fieldsArray.splice(pkIdx, 1)[0]
+    fieldsArray.unshift(pkField)
   }
 }
 
