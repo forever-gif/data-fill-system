@@ -265,3 +265,20 @@ ON CONFLICT (config_key) DO NOTHING;
 
 -- 强制将 allow_export 默认值设为 TRUE，确保后续不管是系统内还是数据库自动创建记录均默认为 TRUE
 ALTER TABLE data_fill_form ALTER COLUMN allow_export SET DEFAULT TRUE;
+
+-- 6. 帆软用户角色批量同步快照与审计表：fr_role_sync_history
+CREATE TABLE IF NOT EXISTS fr_role_sync_history (
+    id              VARCHAR(64) PRIMARY KEY,
+    batch_no        VARCHAR(64),
+    operator        VARCHAR(100),
+    source_title    VARCHAR(255),
+    sync_mode       VARCHAR(32),
+    total_count     INTEGER DEFAULT 0,
+    success_count   INTEGER DEFAULT 0,
+    fail_count      INTEGER DEFAULT 0,
+    snapshot_data   TEXT,
+    status          VARCHAR(32),
+    create_time     TIMESTAMP,
+    rollback_time   TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_fr_sync_hist_time ON fr_role_sync_history(create_time DESC);

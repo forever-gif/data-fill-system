@@ -64,6 +64,11 @@ const router = createRouter({
       path: '/report-detail/:id',
       name: 'reportDetailId',
       component: () => import('../views/ReportCatalogDetail.vue')
+    },
+    {
+      path: '/finereport-roles',
+      name: 'fineReportRoles',
+      component: () => import('../views/FineReportRoleSync.vue')
     }
   ]
 })

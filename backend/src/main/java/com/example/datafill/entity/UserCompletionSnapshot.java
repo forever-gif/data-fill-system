@@ -16,6 +16,7 @@ public class UserCompletionSnapshot {
     /**
      * 用户邮箱与表单ID构成联合主键
      */
+    @TableId
     private String userEmail;
 
     private String formId;

@@ -871,6 +871,95 @@ public class FeishuApiClient {
         }
     }
 
+    /**
+     * 从飞书表格 URL 中提取 spreadsheetToken
+     */
+    public String extractSpreadsheetToken(String tokenOrUrl) {
+        if (tokenOrUrl == null) return "";
+        String s = tokenOrUrl.trim();
+        java.util.regex.Matcher sheetMatcher = java.util.regex.Pattern.compile("/sheets/([a-zA-Z0-9_-]{15,})").matcher(s);
+        if (sheetMatcher.find()) {
+            return sheetMatcher.group(1);
+        }
+        java.util.regex.Matcher wikiMatcher = java.util.regex.Pattern.compile("/wiki/([a-zA-Z0-9_-]{15,})").matcher(s);
+        if (wikiMatcher.find()) {
+            return wikiMatcher.group(1);
+        }
+        if (s.contains("?")) s = s.substring(0, s.indexOf("?"));
+        if (s.contains("/")) s = s.substring(s.lastIndexOf("/") + 1);
+        return s;
+    }
+
+    /**
+     * 从飞书表格 URL 中提取参数中的 sheetId (如 ?sheet=xxxxxx)
+     */
+    public String extractSpreadsheetSheetId(String url) {
+        if (url == null) return null;
+        java.util.regex.Matcher m = java.util.regex.Pattern.compile("[?&]sheet=([a-zA-Z0-9_-]+)").matcher(url);
+        if (m.find()) {
+            return m.group(1);
+        }
+        return null;
+    }
+
+    /**
+     * 获取飞书电子表格的所有工作表子 Tab (Sheet Meta)
+     */
+    public List<Map<String, Object>> getSpreadsheetSheets(String spreadsheetToken, String token) {
+        String realToken = extractSpreadsheetToken(spreadsheetToken);
+        String url = FEISHU_HOST + "/sheets/v3/spreadsheets/" + realToken + "/sheets/query";
+        HttpHeaders headers = createAuthHeaders(token);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+            Map respBody = response.getBody();
+            if (respBody != null && Integer.valueOf(0).equals(respBody.get("code"))) {
+                Map data = (Map) respBody.get("data");
+                if (data != null && data.containsKey("sheets")) {
+                    return (List<Map<String, Object>>) data.get("sheets");
+                }
+            } else {
+                log.warn("获取飞书电子表格 [{}] 工作表列表失败: {}", realToken, respBody);
+            }
+        } catch (Exception e) {
+            log.error("调用飞书 query sheets 异常: {}", e.getMessage());
+            throw new RuntimeException("读取飞书表格工作表失败: " + e.getMessage(), e);
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * 读取飞书工作表内容 (二维矩阵数据)
+     */
+    public List<List<Object>> getSheetValues(String spreadsheetToken, String sheetId, String token) {
+        String realToken = extractSpreadsheetToken(spreadsheetToken);
+        String range = (sheetId != null && !sheetId.isBlank()) ? sheetId + "!A1:Z5000" : "A1:Z5000";
+        String url = FEISHU_HOST + "/sheets/v2/spreadsheets/" + realToken + "/values/" + range + "?valueRenderOption=ToString";
+        HttpHeaders headers = createAuthHeaders(token);
+        HttpEntity<Void> entity = new HttpEntity<>(headers);
+
+        try {
+            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.GET, entity, Map.class);
+            Map respBody = response.getBody();
+            if (respBody != null && Integer.valueOf(0).equals(respBody.get("code"))) {
+                Map data = (Map) respBody.get("data");
+                if (data != null && data.containsKey("valueRange")) {
+                    Map valueRange = (Map) data.get("valueRange");
+                    if (valueRange != null && valueRange.containsKey("values")) {
+                        return (List<List<Object>>) valueRange.get("values");
+                    }
+                }
+            } else {
+                log.warn("读取飞书电子表格 [{}] 范围 [{}] 失败: {}", realToken, range, respBody);
+            }
+        } catch (Exception e) {
+            log.error("调用飞书 get sheet values 异常: {}", e.getMessage());
+            throw new RuntimeException("读取飞书表格内容失败: " + e.getMessage(), e);
+        }
+        return Collections.emptyList();
+    }
+
     private HttpHeaders createAuthHeaders(String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
