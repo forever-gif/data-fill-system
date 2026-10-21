@@ -19,13 +19,18 @@ import java.util.*;
 
 /**
  * 报表资产目录 Service 业务层
- * 真正从 PostgreSQL 数据库表 dwd.dwd_fid_report_catalog 实时获取与维护数据
+ * 真正从 PostgreSQL 数据库表 fr_manage.dwd_fid_report_catalog 实时获取与维护数据
  * 具备自动建表与自愈初始化能力，确保在主库或动态库中 100% 存在物理表
  */
 @Service
 public class ReportCatalogService {
 
     private static final Logger log = LoggerFactory.getLogger(ReportCatalogService.class);
+
+    /**
+     * 报表资产物理表全名 (模式名.表名)
+     */
+    public static final String TABLE_NAME = "fr_manage.dwd_fid_report_catalog";
 
     @Autowired(required = false)
     private ReportCatalogMapper reportCatalogMapper;
@@ -48,7 +53,7 @@ public class ReportCatalogService {
     }
 
     /**
-     * RowMapper: 将 dwd.dwd_fid_report_catalog 物理表字段映射到 ReportCatalog 实体
+     * RowMapper: 将 fr_manage.dwd_fid_report_catalog 物理表字段映射到 ReportCatalog 实体
      */
     private final RowMapper<ReportCatalog> reportRowMapper = new RowMapper<ReportCatalog>() {
         @Override
@@ -151,19 +156,19 @@ public class ReportCatalogService {
 
         JdbcTemplate jdbc = getJdbcTemplate();
         if (jdbc != null) {
-            // 🌟 1. 优先直接从 dwd.dwd_fid_report_catalog 表实时查询
+            // 🌟 1. 优先直接从物理表实时查询
             try {
-                String sql = "SELECT * FROM dwd.dwd_fid_report_catalog WHERE delete_flag = false OR delete_flag IS NULL " +
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE delete_flag = false OR delete_flag IS NULL " +
                         "ORDER BY COALESCE(l3, ''), COALESCE(l4, ''), COALESCE(l5, ''), COALESCE(l6, ''), COALESCE(l7, ''), report_name ASC, report_id ASC";
                 List<ReportCatalog> list = jdbc.query(sql, reportRowMapper);
                 if (list != null && !list.isEmpty()) {
-                    log.info("成功从 dwd.dwd_fid_report_catalog 读取到 {} 条报表数据记录并写入高速缓存", list.size());
+                    log.info("成功从 {} 读取到 {} 条报表数据记录并写入高速缓存", TABLE_NAME, list.size());
                     this.cachedCatalogs = list;
                     this.cacheTimestamp = now;
                     return list;
                 }
             } catch (Exception e) {
-                log.warn("从 dwd.dwd_fid_report_catalog 查询异常: {}", e.getMessage());
+                log.warn("从 {} 查询异常: {}", TABLE_NAME, e.getMessage());
             }
         }
 
@@ -203,13 +208,13 @@ public class ReportCatalogService {
         JdbcTemplate jdbc = getJdbcTemplate();
         if (jdbc != null) {
             try {
-                String sql = "SELECT * FROM dwd.dwd_fid_report_catalog WHERE report_id = ? AND (delete_flag = false OR delete_flag IS NULL) LIMIT 1";
+                String sql = "SELECT * FROM " + TABLE_NAME + " WHERE report_id = ? AND (delete_flag = false OR delete_flag IS NULL) LIMIT 1";
                 List<ReportCatalog> list = jdbc.query(sql, reportRowMapper, reportId.trim());
                 if (list != null && !list.isEmpty()) {
                     return list.get(0);
                 }
             } catch (Exception e) {
-                log.warn("从 dwd.dwd_fid_report_catalog 表查询 reportId = {} 异常: {}", reportId, e.getMessage());
+                log.warn("从 {} 表查询 reportId = {} 异常: {}", TABLE_NAME, reportId, e.getMessage());
             }
         }
 
@@ -278,13 +283,13 @@ public class ReportCatalogService {
                 }
 
                 // 统计总数
-                String countSql = "SELECT COUNT(*) FROM dwd.dwd_fid_report_catalog" + where.toString();
+                String countSql = "SELECT COUNT(*) FROM " + TABLE_NAME + where.toString();
                 Number num = jdbc.queryForObject(countSql, Long.class, params.toArray());
                 total = num != null ? num.longValue() : 0;
 
                 // 分页列表
                 int offset = Math.max(0, (pageNum - 1) * pageSize);
-                String listSql = "SELECT * FROM dwd.dwd_fid_report_catalog" + where.toString() +
+                String listSql = "SELECT * FROM " + TABLE_NAME + where.toString() +
                         " ORDER BY COALESCE(l3, ''), COALESCE(l4, ''), COALESCE(l5, ''), COALESCE(l6, ''), COALESCE(l7, ''), report_name ASC LIMIT ? OFFSET ?";
                 params.add(pageSize);
                 params.add(offset);
@@ -304,7 +309,7 @@ public class ReportCatalogService {
     }
 
     /**
-     * 4. 保存或更新报表元数据 (写入 dwd.dwd_fid_report_catalog 数据库物理表)
+     * 4. 保存或更新报表元数据 (写入物理表)
      */
     public boolean saveOrUpdateReport(String reportId, ReportCatalog catalog) {
         if (catalog == null || reportId == null) return false;
@@ -314,12 +319,12 @@ public class ReportCatalogService {
         JdbcTemplate jdbc = getJdbcTemplate();
         if (jdbc != null) {
             try {
-                String checkSql = "SELECT COUNT(*) FROM dwd.dwd_fid_report_catalog WHERE report_id = ?";
+                String checkSql = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE report_id = ?";
                 Integer cnt = jdbc.queryForObject(checkSql, Integer.class, reportId);
                 boolean exists = cnt != null && cnt > 0;
 
                 if (exists) {
-                    String updateSql = "UPDATE dwd.dwd_fid_report_catalog SET " +
+                    String updateSql = "UPDATE " + TABLE_NAME + " SET " +
                             "report_name = ?, parent_id = ?, l1 = ?, l2 = ?, l3 = ?, l4 = ?, l5 = ?, l6 = ?, l7 = ?, " +
                             "report_url = ?, full_path = ?, report_desc = ?, biz_domain = ?, subject_l1 = ?, subject_l2 = ?, " +
                             "owner = ?, dept_name = ?, use_scope = ?, dimensions = ?, metrics = ?, " +
@@ -341,7 +346,7 @@ public class ReportCatalogService {
                             Timestamp.valueOf(LocalDateTime.now()),
                             reportId);
                 } else {
-                    String insertSql = "INSERT INTO dwd.dwd_fid_report_catalog (" +
+                    String insertSql = "INSERT INTO " + TABLE_NAME + " (" +
                             "report_id, parent_id, report_name, l1, l2, l3, l4, l5, l6, l7, " +
                             "report_url, full_path, report_desc, biz_domain, subject_l1, subject_l2, " +
                             "owner, dept_name, use_scope, dimensions, metrics, " +
@@ -377,7 +382,7 @@ public class ReportCatalogService {
                 }
                 return true;
             } catch (Exception e) {
-                log.error("保存报表资产至 dwd.dwd_fid_report_catalog 物理表失败", e);
+                log.error("保存报表资产至 " + TABLE_NAME + " 物理表失败", e);
             }
         }
 
@@ -392,7 +397,7 @@ public class ReportCatalogService {
         JdbcTemplate jdbc = getJdbcTemplate();
         if (jdbc != null) {
             try {
-                String sql = "UPDATE dwd.dwd_fid_report_catalog SET delete_flag = true, w_update_dt = ? WHERE report_id = ?";
+                String sql = "UPDATE " + TABLE_NAME + " SET delete_flag = true, w_update_dt = ? WHERE report_id = ?";
                 jdbc.update(sql, Timestamp.valueOf(LocalDateTime.now()), reportId);
                 return true;
             } catch (Exception e) {

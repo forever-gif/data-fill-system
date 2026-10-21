@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 
 /**
  * 报表资产目录实体类
- * 对应表: dwd.dwd_fid_report_catalog
+ * 对应表: fr_manage.dwd_fid_report_catalog
  */
-@TableName("dwd.dwd_fid_report_catalog")
+@TableName("fr_manage.dwd_fid_report_catalog")
 public class ReportCatalog implements Serializable {
 
     private static final long serialVersionUID = 1L;

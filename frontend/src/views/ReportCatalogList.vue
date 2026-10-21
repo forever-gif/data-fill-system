@@ -153,7 +153,7 @@
             </el-button>
           </div>
 
-          <!-- 数据表格 (从 PostgreSQL dwd.dwd_fid_report_catalog 表实时读取) -->
+          <!-- 数据表格 (从 PostgreSQL fr_manage.dwd_fid_report_catalog 表实时读取) -->
           <el-table
             v-loading="loading"
             :data="pagedTableData"

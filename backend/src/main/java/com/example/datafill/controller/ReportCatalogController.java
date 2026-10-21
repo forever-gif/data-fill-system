@@ -49,7 +49,7 @@ public class ReportCatalogController {
     }
 
     /**
-     * 获取所有报表资产列表 (直接从 dwd.dwd_fid_report_catalog 表实时查询)
+     * 获取所有报表资产列表 (直接从 fr_manage.dwd_fid_report_catalog 表实时查询)
      * GET /api/report/catalog/list
      */
     @GetMapping("/list")

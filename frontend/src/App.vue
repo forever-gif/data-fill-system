@@ -13,7 +13,6 @@
             <el-menu-item v-if="isAdmin" index="/forms">模板管理</el-menu-item>
             <el-menu-item v-if="isAdmin" index="/designer">新建模板</el-menu-item>
             <el-menu-item v-if="isAdmin" index="/settings">系统配置</el-menu-item>
-            <el-menu-item v-if="isAdmin" index="/finereport-roles">帆软角色同步</el-menu-item>
           </el-menu>
           <div class="header-right">
             <el-tag v-if="currentUser" type="info" effect="plain" class="user-badge" round>

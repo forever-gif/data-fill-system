@@ -156,6 +156,19 @@
                 </div>
               </template>
             </el-table-column>
+
+            <el-table-column prop="tableName" label="数据库物理表名" min-width="220" show-overflow-tooltip>
+              <template #default="scope">
+                <span
+                  class="table-code"
+                  :title="'点击复制: ' + formatFullTableName(scope.row)"
+                  style="cursor: pointer;"
+                  @click="copyTableName(formatFullTableName(scope.row))"
+                >
+                  {{ formatFullTableName(scope.row) }}
+                </span>
+              </template>
+            </el-table-column>
   
             <el-table-column prop="status" label="状态" width="110" align="center">
               <template #default="scope">
@@ -384,9 +397,11 @@ const stopSidebarResize = () => {
 const filteredForms = computed(() => {
   const keyword = appliedSearchQuery.value.trim().toLowerCase()
   return forms.value.filter(form => {
+    const fullTable = formatFullTableName(form).toLowerCase()
     const matchesSearch = !keyword ||
       (form.name || '').toLowerCase().includes(keyword) ||
-      (form.tableName || '').toLowerCase().includes(keyword)
+      (form.tableName || '').toLowerCase().includes(keyword) ||
+      fullTable.includes(keyword)
     const matchesStatus = !appliedStatusFilter.value || form.status === appliedStatusFilter.value
     return matchesSearch && matchesStatus
   })
@@ -474,6 +489,31 @@ const resolveFolderPath = (folderId) => {
   if (!folderId) return '默认'
   const segments = folderPathMap.value[folderId]
   return segments && segments.length > 0 ? segments.join(' / ') : '默认'
+}
+
+const formatFullTableName = (row) => {
+  if (!row || !row.tableName) return '-'
+  if (row.tableName.includes('.')) return row.tableName
+  return row.schemaName ? `${row.schemaName}.${row.tableName}` : row.tableName
+}
+
+const copyTableName = async (text) => {
+  if (!text || text === '-') return
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text)
+    } else {
+      const input = document.createElement('textarea')
+      input.value = text
+      document.body.appendChild(input)
+      input.select()
+      document.execCommand('copy')
+      document.body.removeChild(input)
+    }
+    ElMessage.success({ message: `已复制表名: ${text}`, duration: 1500 })
+  } catch (e) {
+    ElMessage.info(`表名: ${text}`)
+  }
 }
 
 const handlePaginationChange = () => {}
@@ -1216,6 +1256,19 @@ onBeforeUnmount(() => {
   font-size: 12px;
   color: #334155;
   border: 1px solid #e2e8f0;
+  transition: all 0.2s;
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.table-code:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
 }
 
 .status-tag {
