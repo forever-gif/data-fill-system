@@ -113,14 +113,14 @@ public class ExcelService {
 
     private final SystemConfigService configService;
 
-    @org.springframework.beans.factory.annotation.Value("${data-fill.import.max-file-size-mb:20}")
+    @org.springframework.beans.factory.annotation.Value("${data-fill.import.max-file-size-mb:100}")
     private int maxFileSizeMb;
 
 
     static {
         // 针对 50MB 压缩文件，解压后的单个 Record 块可能超过默认的 100MB 限制
         // 这里设置为 500MB，允许处理更大或更复杂的 Excel 结构
-        IOUtils.setByteArrayMaxOverride(500 * 1024 * 1024);
+        IOUtils.setByteArrayMaxOverride(1000 * 1024 * 1024);
     }
 
     /**

@@ -1607,8 +1607,8 @@ const onFileChange = async (uploadFile) => {
   if (!uploadFile.raw) return
   const file = uploadFile.raw
   
-  if (file.size > 20 * 1024 * 1024) {
-    ElMessage.error('上传文件过大（超过 20MB），为了确保系统稳定性，请将数据分批进行识别或导入。')
+  if (file.size > 100 * 1024 * 1024) {
+    ElMessage.error('上传文件过大（超过 100MB），为了确保系统稳定性，请将数据分批进行识别或导入。')
     return
   }
   
@@ -1661,8 +1661,8 @@ const onReferenceTemplateFileChange = async (uploadFile) => {
   if (!uploadFile.raw) return
   const file = uploadFile.raw
   
-  if (file.size > 20 * 1024 * 1024) {
-    ElMessage.error('上传文件过大（超过 20MB），为了确保系统稳定性，请将数据分批进行参考或识别。')
+  if (file.size > 100 * 1024 * 1024) {
+    ElMessage.error('上传文件过大（超过 100MB），为了确保系统稳定性，请将数据分批进行参考或识别。')
     return
   }
   

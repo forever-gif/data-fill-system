@@ -791,9 +791,9 @@ const handleExport = async () => {
 const handleUpload = async (options) => {
   const file = options.file
   
-  // 增加前端初步校验：20MB 限制（与后端配置一致）
-  if (file.size > 20 * 1024 * 1024) {
-    ElMessage.error('上传文件过大（超过 20MB），为了确保系统稳定性，请将数据分批进行导入。')
+  // 增加前端初步校验：100MB 限制（与后端配置一致）
+  if (file.size > 100 * 1024 * 1024) {
+    ElMessage.error('上传文件过大（超过 100MB），为了确保系统稳定性，请将数据分批进行导入。')
     return
   }
   

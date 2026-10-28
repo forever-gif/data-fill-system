@@ -5,12 +5,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<?> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException e) {
+        log.warn("Upload file size exceeded limit: {}", e.getMessage());
+        return ResponseEntity.status(400).body(java.util.Collections.singletonMap("message", "上传文件过大（超出系统允许的最大上限 100MB），请压缩文件或分批导入。"));
+    }
 
     @ExceptionHandler(AppException.class)
     public ResponseEntity<?> handleAppException(AppException e) {
