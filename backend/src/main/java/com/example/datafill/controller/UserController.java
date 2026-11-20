@@ -96,36 +96,42 @@ public class UserController {
      * 调帆软 API 验证 token 并获取用户名
      */
     private String callFineReportApi(String token) {
-        try {
-            java.net.http.HttpClient client = java.net.http.HttpClient.newBuilder()
-                    .followRedirects(java.net.http.HttpClient.Redirect.NORMAL)
-                    .build();
-            java.net.http.HttpRequest req = java.net.http.HttpRequest.newBuilder()
-                    .uri(java.net.URI.create(
-                            "http://8.136.2.153:8081/webroot/decision/login/status/check?fine_auth_token="
-                            + java.net.URLEncoder.encode(token, "UTF-8")))
-                    .header("Cookie", "fine_auth_token=" + token)
-                    .GET()
-                    .build();
-            java.net.http.HttpResponse<String> resp = client.send(req,
-                    java.net.http.HttpResponse.BodyHandlers.ofString());
+        java.util.List<String> checkUrls = java.util.List.of(
+                "http://8.136.2.153:8081/webroot/decision/login/status/check?fine_auth_token=",
+                "https://bi.meiying.homes/webroot/decision/login/status/check?fine_auth_token="
+        );
+        java.net.http.HttpClient client = java.net.http.HttpClient.newBuilder()
+                .followRedirects(java.net.http.HttpClient.Redirect.NORMAL)
+                .connectTimeout(java.time.Duration.ofSeconds(5))
+                .build();
+        for (String baseCheckUrl : checkUrls) {
+            try {
+                java.net.http.HttpRequest req = java.net.http.HttpRequest.newBuilder()
+                        .uri(java.net.URI.create(baseCheckUrl + java.net.URLEncoder.encode(token, "UTF-8")))
+                        .header("Cookie", "fine_auth_token=" + token)
+                        .timeout(java.time.Duration.ofSeconds(5))
+                        .GET()
+                        .build();
+                java.net.http.HttpResponse<String> resp = client.send(req,
+                        java.net.http.HttpResponse.BodyHandlers.ofString());
 
-            if (resp.statusCode() == 200) {
-                com.fasterxml.jackson.databind.JsonNode node =
-                        new com.fasterxml.jackson.databind.ObjectMapper().readTree(resp.body());
-                // 帆软返回格式可能是 {"data":{"username":"xxx"}} 或直接 {"username":"xxx"}
-                if (node.has("data") && node.get("data").has("username")) {
-                    return node.get("data").get("username").asText();
+                if (resp.statusCode() == 200 && resp.body() != null && !resp.body().trim().startsWith("<")) {
+                    com.fasterxml.jackson.databind.JsonNode node =
+                            new com.fasterxml.jackson.databind.ObjectMapper().readTree(resp.body());
+                    // 帆软返回格式可能是 {"data":{"username":"xxx"}} 或直接 {"username":"xxx"}
+                    if (node.has("data") && node.get("data").has("username")) {
+                        return node.get("data").get("username").asText();
+                    }
+                    if (node.has("username")) {
+                        return node.get("username").asText();
+                    }
+                    if (node.has("userName")) {
+                        return node.get("userName").asText();
+                    }
                 }
-                if (node.has("username")) {
-                    return node.get("username").asText();
-                }
-                if (node.has("userName")) {
-                    return node.get("userName").asText();
-                }
+            } catch (Exception e) {
+                // 尝试下一个候选地址
             }
-        } catch (Exception e) {
-            // 网络异常等
         }
         return null;
     }

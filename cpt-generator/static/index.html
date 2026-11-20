@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>FineReport CPT 智能报表重构工坊 (通用提效中台)</title>
+  <!-- Vue 3 & Element Plus CDN -->
+  <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://unpkg.com/element-plus"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <style>
+    body { margin: 0; background-color: #f5f7fa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    .header { background: #1f2937; color: #fff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .header h2 { margin: 0; font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .container { padding: 20px; max-width: 1400px; margin: 0 auto; }
+    .card-title { font-weight: 600; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; }
+    .grid-table { font-size: 12px; }
+    .badge-formula { background: #e0f2fe; color: #0284c7; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+    .badge-ds { background: #dcfce7; color: #16a34a; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <h2>📊 FineReport CPT 智能重构工坊 <el-tag size="small" type="success" effect="dark">通用独立版 v1.0</el-tag></h2>
+    <div>
+      <el-tag type="info">端口: 8088 (独立运行，不干扰业务代码)</el-tag>
+    </div>
+  </div>
+
+  <div class="container">
+    <el-row :gutter="16">
+      <!-- 左侧：母版选择与解析 -->
+      <el-col :span="10">
+        <el-card shadow="hover" style="margin-bottom: 16px;">
+          <div class="card-title">
+            <span>1. 选择/上传 CPT 基础母版</span>
+            <el-button type="primary" size="small" @click="parseSelectedTemplate" :loading="loading">解析母版结构</el-button>
+          </div>
+          
+          <el-form label-width="90px" size="small">
+            <el-form-item label="预设母版">
+              <el-select v-model="selectedTemplatePath" placeholder="从 210 个公司报表中选择母版" style="width: 100%" filterable>
+                <el-option v-for="item in presetTemplates" :key="item.path" :label="item.name" :value="item.path">
+                  <span style="float: left">{{ item.name }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 12px">{{ item.rel_path }}</span>
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+
+          <div v-if="parsedData" style="margin-top: 12px; font-size: 13px; color: #4b5563;">
+            <p>✅ <b>母版解析成功：</b> 共有 <b>{{ parsedData.datasets.length }}</b> 个数据集，<b>{{ parsedData.total_cells }}</b> 个核心单元格。</p>
+            <el-collapse>
+              <el-collapse-item title="查看数据集列表与绑定参数">
+                <div v-for="ds in parsedData.datasets" :key="ds.name" style="margin-bottom: 8px;">
+                  <el-tag size="small">{{ ds.name }}</el-tag>
+                  <span style="font-size: 12px; color: #6b7280; margin-left: 8px;">参数: {{ ds.params.join(', ') || '无' }}</span>
+                </div>
+              </el-collapse-item>
+            </el-collapse>
+          </div>
+        </el-card>
+
+        <!-- 新 SQL 解析区 -->
+        <el-card shadow="hover">
+          <div class="card-title">
+            <span>2. 贴入新 SQL / 数仓宽表模型</span>
+            <el-button type="success" size="small" @click="analyzeSql">智能提取字段与参数</el-button>
+          </div>
+          <el-input
+            v-model="inputSql"
+            type="textarea"
+            :rows="6"
+            placeholder="贴入数仓新开发的 SQL 语句 (支持 CTE, JOIN, 动态参数)..."
+          ></el-input>
+
+          <div v-if="sqlMeta" style="margin-top: 12px;">
+            <div style="font-size: 13px; font-weight: 600; margin-bottom: 6px;">自动提取的可用字段 (点击可直接填入右侧)：</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <el-tag
+                v-for="f in sqlMeta.fields_found"
+                :key="f"
+                size="small"
+                effect="plain"
+                style="cursor: pointer"
+                @click="injectField(f)"
+              >
+                + {{ f }}
+              </el-tag>
+            </div>
+          </div>
+        </el-card>
+      </el-col>
+
+      <!-- 右侧：通用列插入与公式重构引擎 -->
+      <el-col :span="14">
+        <el-card shadow="hover">
+          <div class="card-title">
+            <span>3. 通用列插入与拓扑平移手术台</span>
+            <el-button type="warning" size="small" @click="executeInsertAndExport" :loading="exporting">执行重构并下载新 CPT</el-button>
+          </div>
+
+          <el-form label-width="110px" size="small">
+            <el-row :gutter="12">
+              <el-col :span="12">
+                <el-form-item label="插入目标列标">
+                  <el-input v-model="insertForm.targetCol" placeholder="如 D, F, P (在此列之前插入新列)"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="新列表头名称">
+                  <el-input v-model="insertForm.headerTitle" placeholder="如 最优港口推荐比例"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="12">
+              <el-col :span="12">
+                <el-form-item label="挂载数据集">
+                  <el-select v-model="insertForm.datasetName" placeholder="选择目标数据集" style="width: 100%">
+                    <el-option v-for="ds in (parsedData ? parsedData.datasets : [])" :key="ds.name" :label="ds.name" :value="ds.name"></el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="绑定字段名">
+                  <el-input v-model="insertForm.dsField" placeholder="如 optimal_seaport_rate"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-form-item label="或注入自定义公式">
+              <el-input v-model="insertForm.formula" placeholder="留空则绑定字段；也可输入公式如 =if(len($$$)==0, 0, $$$)"></el-input>
+            </el-form-item>
+          </el-form>
+
+          <el-alert
+            title="通用平移保证：系统会自动将插入位置右侧的所有列号 +1，并将后续所有公式（如 =SUM(E4:G4)）自动重写为对应的新坐标，同时自动继承主左父格！"
+            type="info"
+            show-icon
+            :closable="false"
+            style="margin-bottom: 16px;"
+          ></el-alert>
+
+          <!-- 单元格透视抽样 -->
+          <div v-if="parsedData" style="margin-top: 16px;">
+            <div style="font-weight: 600; font-size: 13px; margin-bottom: 8px;">母版单元格与父子格依赖抽样透视：</div>
+            <el-table :data="parsedData.cells.slice(0, 15)" size="small" border stripe class="grid-table">
+              <el-table-column prop="name" label="坐标" width="70" align="center"></el-table-column>
+              <el-table-column prop="value" label="绑定内容/公式" min-width="180">
+                <template #default="scope">
+                  <span v-if="scope.row.type === 'Formula'" class="badge-formula">{{ scope.row.value }}</span>
+                  <span v-else-if="scope.row.type === 'DSColumn'" class="badge-ds">{{ scope.row.value }}</span>
+                  <span v-else>{{ scope.row.value }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="left_parent" label="左父格" width="80" align="center"></el-table-column>
+              <el-table-column prop="direction" label="扩展方向" width="90" align="center">
+                <template #default="scope">
+                  <el-tag v-if="scope.row.direction === '1'" size="small" type="success">纵向向下</el-tag>
+                  <el-tag v-else-if="scope.row.direction === '2'" size="small" type="warning">横向向右</el-tag>
+                  <span v-else style="color: #9ca3af">不扩展</span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
+</div>
+
+<script>
+const { createApp, ref, onMounted } = Vue;
+
+createApp({
+  setup() {
+    const presetTemplates = ref([]);
+    const selectedTemplatePath = ref('');
+    const parsedData = ref(null);
+    const loading = ref(false);
+    const exporting = ref(false);
+
+    const inputSql = ref(`SELECT \n  sku,\n  sea_port_name,\n  warehouse_type,\n  optimal_seaport_rate,\n  report_sort\nFROM ads.ads_scm_pla_purchase_reference_na_wek\nWHERE report_wek_chr = '\${wek_c_report_char}'`);
+    const sqlMeta = ref(null);
+
+    const insertForm = ref({
+      targetCol: 'D',
+      headerTitle: '最优港口推荐比例',
+      datasetName: '',
+      dsField: 'optimal_seaport_rate',
+      formula: ''
+    });
+
+    onMounted(async () => {
+      try {
+        const res = await axios.get('/api/preset_templates');
+        presetTemplates.value = res.data.templates;
+        if (res.data.templates.length > 0) {
+          // Default to US sales simple or first
+          const found = res.data.templates.find(t => t.name.includes('美线销量简表') || t.name.includes('供应链'));
+          selectedTemplatePath.value = found ? found.path : res.data.templates[0].path;
+          parseSelectedTemplate();
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
+    const parseSelectedTemplate = async () => {
+      if (!selectedTemplatePath.value) return;
+      loading.value = true;
+      try {
+        const formData = new FormData();
+        formData.append('template_path', selectedTemplatePath.value);
+        const res = await axios.post('/api/parse_cpt', formData);
+        parsedData.value = res.data;
+        if (res.data.datasets.length > 0) {
+          insertForm.value.datasetName = res.data.datasets[0].name;
+        }
+        ElementPlus.ElMessage.success('母版解析成功！');
+      } catch (err) {
+        ElementPlus.ElMessage.error('解析失败: ' + (err.response?.data?.detail || err.message));
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    const analyzeSql = async () => {
+      try {
+        const res = await axios.post('/api/analyze_sql', { sql: inputSql.value });
+        sqlMeta.value = res.data;
+        ElementPlus.ElMessage.success('成功提取 ' + res.data.fields_found.length + ' 个字段');
+      } catch (err) {
+        ElementPlus.ElMessage.error('SQL 分析失败');
+      }
+    };
+
+    const injectField = (fieldName) => {
+      insertForm.value.dsField = fieldName;
+      insertForm.value.headerTitle = fieldName;
+      ElementPlus.ElMessage.info('已选择字段: ' + fieldName);
+    };
+
+    const executeInsertAndExport = async () => {
+      exporting.value = true;
+      try {
+        const res = await axios.post('/api/insert_column_and_export', {
+          template_path: selectedTemplatePath.value,
+          insert_at_col: insertForm.value.targetCol,
+          header_title: insertForm.value.headerTitle,
+          dataset_name: insertForm.value.datasetName,
+          ds_field: insertForm.value.dsField,
+          formula: insertForm.value.formula
+        }, { responseType: 'blob' });
+
+        const blob = new Blob([res.data]);
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `reconstructed_${insertForm.value.headerTitle}.cpt`;
+        link.click();
+        ElementPlus.ElMessage.success('新 CPT 生成成功，已开始下载！');
+      } catch (err) {
+        ElementPlus.ElMessage.error('生成失败');
+      } finally {
+        exporting.value = false;
+      }
+    };
+
+    return {
+      presetTemplates,
+      selectedTemplatePath,
+      parsedData,
+      loading,
+      exporting,
+      inputSql,
+      sqlMeta,
+      insertForm,
+      parseSelectedTemplate,
+      analyzeSql,
+      injectField,
+      executeInsertAndExport
+    };
+  }
+}).use(ElementPlus).mount('#app');
+</script>
+</body>
+</html>

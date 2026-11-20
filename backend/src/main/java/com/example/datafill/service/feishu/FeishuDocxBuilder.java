@@ -451,7 +451,8 @@ public class FeishuDocxBuilder {
                             && !trimmed.equalsIgnoreCase("美鹰集团报表")
                             && !trimmed.equalsIgnoreCase("集团报表")
                             && !trimmed.toLowerCase().endsWith(".cpt")
-                            && !trimmed.toLowerCase().endsWith(".frm")) {
+                            && !trimmed.toLowerCase().endsWith(".frm")
+                            && !trimmed.toLowerCase().endsWith(".fvs")) {
                         validLevels.add(formatPreserveNumber(trimmed));
                     }
                 }
@@ -561,12 +562,12 @@ public class FeishuDocxBuilder {
 
     private String formatPreserveNumber(String text) {
         if (text == null || text.isBlank()) return "";
-        return text.replace(".cpt", "").replace(".frm", "").trim();
+        return text.replaceAll("(?i)\\.(cpt|frm|fvs)$", "").trim();
     }
 
     private String formatCleanName(String name) {
         if (name == null || name.isBlank()) return "未命名报表";
-        return name.replace(".cpt", "").replace(".frm", "").trim();
+        return name.replaceAll("(?i)\\.(cpt|frm|fvs)$", "").trim();
     }
 
     private String escapeHtml(String text) {

@@ -1,0 +1,101 @@
+{
+  "total_cpts": 210,
+  "database_connections": {
+    "美鹰PG数仓": 309
+  },
+  "top_parameters": {
+    "s_read_permission": 224,
+    "fine_role": 167,
+    "fine_username": 153,
+    "v_country": 135,
+    "v_month": 116,
+    "v_third_sort_desc": 113,
+    "v_second_sort_desc": 106,
+    "v_first_sort_desc": 95,
+    "v_continent": 91,
+    "v_sku": 89,
+    "v_dept": 85,
+    "s_continent_role": 76,
+    "v_spu": 66,
+    "v_person": 65,
+    "v_platform": 59,
+    "v_report_date": 55,
+    "v_bu": 50,
+    "v_bu_name": 48,
+    "first_show": 42,
+    "v_account": 38
+  },
+  "expand_directions": {
+    "不扩展": 39047
+  },
+  "top_parent_child_rules": {
+    "左父格:B1": 389,
+    "左父格:A2": 319,
+    "左父格:C1": 190,
+    "左父格:E4": 176,
+    "左父格:F6": 148,
+    "左父格:G5": 131,
+    "左父格:A1": 130,
+    "左父格:E1": 113,
+    "左父格:D4": 111,
+    "左父格:C4": 108,
+    "左父格:A3": 106,
+    "左父格:G4": 95,
+    "左父格:F4": 92,
+    "左父格:E3": 78,
+    "左父格:C3": 74
+  },
+  "top_formula_functions": {
+    "IF": 12473,
+    "REPLACE": 2342,
+    "ISNULL": 1880,
+    "SUM": 1370,
+    "FIND": 1164,
+    "CONCATENATE": 237,
+    "ROUND": 55,
+    "FORMAT": 37,
+    "MAX": 21,
+    "RIGHT": 21,
+    "SUMIFS": 20,
+    "SPLIT": 18,
+    "ABS": 18,
+    "LEN": 16,
+    "DATEDELTA": 16,
+    "TODATE": 16,
+    "YEAR": 16,
+    "TODAY": 16,
+    "INDEXOFARRAY": 16,
+    "SWITCH": 9
+  },
+  "top_sample_formulas": {
+    "=SUM(AG4)": 22,
+    "=SUM(AP4)": 20,
+    "=SUM(Q4)": 19,
+    "=SUM(S4)": 18,
+    "=SUM(T4)": 18,
+    "=SUM(AF4)": 18,
+    "=CONCATENATE($v_month,\" 销售情况\")": 18,
+    "=SUM(AE4)": 18,
+    "=SUM(AD4)": 17,
+    "=SUM(AI4)": 17,
+    "=SUM(AB4)": 17,
+    "=SUM(Z4)": 16,
+    "=SUM(AO4)": 16,
+    "=SUM(Y4)": 16,
+    "=SUM(AR4)": 16
+  },
+  "highlight_actions": {
+    "ForegroundHighlightAction": 5638,
+    "ValueHighlightAction": 1951,
+    "ColWidthHighlightAction": 1938,
+    "RowHeightHighlightAction": 1058,
+    "BackgroundHighlightAction": 226,
+    "FRFontHighlightAction": 8
+  },
+  "highlight_colors": {},
+  "highlight_condition_types": {
+    "ObjectCondition": 8671,
+    "FormulaCondition": 4266,
+    "ListCondition": 2090
+  }
+}

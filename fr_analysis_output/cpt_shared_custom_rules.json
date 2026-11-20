@@ -1,0 +1,45 @@
+{
+  "parameters": [
+    {
+      "key": "custom_v_channel",
+      "paramName": "v_channel",
+      "label": "销售渠道",
+      "widgetType": "ComboCheckBox",
+      "defaultValue": "",
+      "description": "如 自营/批发/线上渠道 多选过滤",
+      "isSecurity": false,
+      "builtin": false,
+      "author": "张工",
+      "createTime": "2026-11-05 10:25"
+    }
+  ],
+  "formulas": [
+    {
+      "id": "FORMULA_GROSS_MARGIN",
+      "name": "毛利率计算 (含防除零)",
+      "category": "比率分析",
+      "templateExpr": "=IF(ISNULL({sales})||{sales}==0, 0, ({sales}-{cost})/{sales})",
+      "description": "标准防除零毛利率计算公式",
+      "placeholders": ["sales", "cost"],
+      "builtin": false,
+      "author": "李工",
+      "createTime": "2026-11-05 10:26"
+    }
+  ],
+  "rules": [
+    {
+      "id": "RULE_RATE_ALERT_80",
+      "name": "达成率未达标黄色预警 (< 80%)",
+      "category": "指标告警",
+      "conditionType": "value",
+      "formulaExpr": "",
+      "compareOp": "1",
+      "compareVal": "0.8",
+      "actionType": "bg_yellow",
+      "description": "当达成率小于 80% 时填充黄色背景预警",
+      "builtin": false,
+      "author": "王工",
+      "createTime": "2026-11-05 10:28"
+    }
+  ]
+}

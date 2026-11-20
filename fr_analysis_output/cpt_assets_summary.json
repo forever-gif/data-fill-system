@@ -1,0 +1,87 @@
+{
+  "summary": {
+    "total_cpts": 210,
+    "xml_versions": {
+      "20211223": 210
+    },
+    "release_versions": {
+      "11.5.0": 210
+    }
+  },
+  "folder_distribution": {
+    "01生产环境/06.财务管理": 50,
+    "01生产环境/05.物流管理": 48,
+    "01生产环境/00.经营管理": 25,
+    "01生产环境/02.供应链管理": 21,
+    "01生产环境/03.销售运营管理": 20,
+    "01生产环境/04.售后管理": 14,
+    "02开发环境/0298.测试": 10,
+    "02开发环境/经营分析报告": 8,
+    "01生产环境/01.产品管理": 4,
+    "02开发环境/0206.财务管理": 2,
+    "01生产环境/97.数据填报": 1,
+    "02开发环境/0205.物流管理": 1,
+    "01生产环境/99.公共数据": 1,
+    "01生产环境/98.自助跑数": 1,
+    "02开发环境/0297.开发展示模板": 1,
+    "01生产环境/08.合规管理": 1,
+    "02开发环境/01.经营月报": 1,
+    "02开发环境/0200.经营管理": 1
+  },
+  "database_connections": {
+    "美鹰PG数仓": 309
+  },
+  "top_25_parameters": {
+    "s_read_permission": 224,
+    "fine_role": 167,
+    "fine_username": 153,
+    "v_country": 135,
+    "v_month": 116,
+    "v_third_sort_desc": 113,
+    "v_second_sort_desc": 106,
+    "v_first_sort_desc": 95,
+    "v_continent": 91,
+    "v_sku": 89,
+    "v_dept": 85,
+    "s_continent_role": 76,
+    "v_spu": 66,
+    "v_person": 65,
+    "v_platform": 59,
+    "v_report_date": 55,
+    "v_bu": 50,
+    "v_bu_name": 48,
+    "first_show": 42,
+    "v_account": 38,
+    "v_operation": 37,
+    "v_start_date": 35,
+    "v_end_date": 35,
+    "v_bu_manager": 33,
+    "v_dept_name": 32
+  },
+  "top_20_formula_functions": {},
+  "top_20_popular_formulas": {},
+  "top_parent_child_patterns": {
+    "LeftParent: B1 (dir=default)": 389,
+    "LeftParent: A2 (dir=default)": 319,
+    "LeftParent: C1 (dir=default)": 190,
+    "LeftParent: E4 (dir=default)": 176,
+    "LeftParent: F6 (dir=default)": 148,
+    "LeftParent: G5 (dir=default)": 131,
+    "LeftParent: A1 (dir=default)": 130,
+    "LeftParent: E1 (dir=default)": 113,
+    "LeftParent: D4 (dir=default)": 111,
+    "LeftParent: C4 (dir=default)": 108,
+    "LeftParent: A3 (dir=default)": 106,
+    "LeftParent: G4 (dir=default)": 95,
+    "LeftParent: F4 (dir=default)": 92,
+    "LeftParent: E3 (dir=default)": 78,
+    "LeftParent: C3 (dir=default)": 74,
+    "LeftParent: F5 (dir=default)": 74,
+    "LeftParent: D5 (dir=default)": 74,
+    "LeftParent: F3 (dir=default)": 73,
+    "LeftParent: B4 (dir=default)": 68,
+    "LeftParent: K4 (dir=default)": 68
+  },
+  "condition_attribute_actions": {},
+  "condition_colors": {}
+}

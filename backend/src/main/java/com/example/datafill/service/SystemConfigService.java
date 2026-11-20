@@ -126,7 +126,7 @@ public class SystemConfigService {
         }
     }
 
-    private String getConfigValue(String key) {
+    public String getConfigValue(String key) {
 
         SystemConfig config = configMapper.selectOne(new LambdaQueryWrapper<SystemConfig>().eq(SystemConfig::getConfigKey, key));
 

@@ -1,0 +1,3626 @@
+{
+  "supplier": {
+    "name": "supplier",
+    "path": "D:\\data-fill-system\\frReport\\20829094-01e2-43c8-9f7e-0641c63c4439\\美鹰集团报表\\01生产环境\\02.供应链管理\\03.供应商管理分析\\03供应商管理报表.cpt",
+    "datasets": [
+      {
+        "name": "供应商管理汇总表",
+        "query_preview": "WITH  -- 统计称呼统合状态（只要旗下有合作或考核，全员按合作/考核计算） supply_call_status AS (     SELECT          call,         CASE              WHEN MAX(CASE WHEN status = 1 THEN 1 ELSE 0 END) = 1 THEN '合作'             WHEN MAX"
+      },
+      {
+        "name": "有效spu、sku数量",
+        "query_preview": "select  \tt1.report_month,     ${if(find(\"1\",v_show_country)<>0,\" t1.supply_name as grouping_field,\",\"\")}     ${if(find(\"2\",v_show_country)<>0,\"t1.supply_chain_person as grouping_field,\",\"\")}     ${if("
+      }
+    ],
+    "parameters": [
+      "v_second_sort_desc",
+      "v_month",
+      "v_bu_name",
+      "v_supply_name",
+      "s_continent_role",
+      "s_unorganization_role",
+      "v_supply_chain_person",
+      "v_show_country",
+      "s_opt_dept_role",
+      "s_opt_bu_role",
+      "v_purchase_country",
+      "v_export_country",
+      "fine_username",
+      "fine_role",
+      "s_read_permission",
+      "l_show_country",
+      "let_char",
+      "first_show",
+      "v_fix_contry",
+      "v_date"
+    ],
+    "cell_count": 237,
+    "expand_cells": [
+      {
+        "coord": "BH3",
+        "direction": "不扩展",
+        "left": "K3",
+        "top": null
+      },
+      {
+        "coord": "BM3",
+        "direction": "不扩展",
+        "left": "K3",
+        "top": null
+      },
+      {
+        "coord": "BP3",
+        "direction": "不扩展",
+        "left": "K3",
+        "top": null
+      },
+      {
+        "coord": "BU3",
+        "direction": "不扩展",
+        "left": "K3",
+        "top": null
+      },
+      {
+        "coord": "BV3",
+        "direction": "不扩展",
+        "left": "K3",
+        "top": null
+      },
+      {
+        "coord": "BW3",
+        "direction": "不扩展",
+        "left": "K3",
+        "top": null
+      },
+      {
+        "coord": "BX3",
+        "direction": "不扩展",
+        "left": "K3",
+        "top": null
+      },
+      {
+        "coord": "B4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "C4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "D4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "E4",
+        "direction": "不扩展",
+        "left": "A3",
+        "top": null
+      },
+      {
+        "coord": "N4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "O4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "P4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "Q4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "R4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "S4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "T4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "U4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "V4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "W4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "X4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AA4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AB4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AC4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AD4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AE4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AF4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AG4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AH4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AI4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AJ4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AK4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AL4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AM4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AN4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AO4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AP4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AQ4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AR4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AS4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AT4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AU4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AV4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AW4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AX4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AY4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AZ4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BA4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BB4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BC4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BD4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BE4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BF4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BG4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BH4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BI4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BJ4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BK4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BL4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BM4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BN4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BO4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BP4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BQ4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BR4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BS4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BT4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BU4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BV4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BW4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BX4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BY4",
+        "direction": "不扩展",
+        "left": "A3",
+        "top": null
+      }
+    ],
+    "formulas": [
+      {
+        "coord": "P3",
+        "formula": "=if(or(O3 = 0,N3 = 0),\"\",O3 / N3)"
+      },
+      {
+        "coord": "Z3",
+        "formula": "=if(or(Y3 = 0),\"\",X3/Y3)"
+      },
+      {
+        "coord": "AG3",
+        "formula": "=if(or(AE3 = 0,AF3 = 0),\"\",AE3 / AF3)"
+      },
+      {
+        "coord": "AJ3",
+        "formula": "=if(or(AH3 = 0,AI3 = 0),\"\",AH3 / AI3)"
+      },
+      {
+        "coord": "AP3",
+        "formula": "=if(or(AO3 = 0,AM3 = 0),\"\",AO3 / AM3)"
+      },
+      {
+        "coord": "BA3",
+        "formula": "=if(or(AY3 = 0,AW3 = 0),\"\",AY3 / AW3)"
+      },
+      {
+        "coord": "BB3",
+        "formula": "=if(or(AZ3 = 0,AX3 = 0),\"\",AZ3 / AX3)"
+      },
+      {
+        "coord": "BE3",
+        "formula": "=if(or(BC3 = 0,BD3 = 0),\"\",BC3 / BD3)"
+      },
+      {
+        "coord": "BH3",
+        "formula": "=if(or(BG3 = 0,BF3 = 0),\"\",BG3 / BF3)"
+      },
+      {
+        "coord": "BM3",
+        "formula": "=if(or(BK3 = 0,BL3 = 0),\"\",BK3 / BL3)"
+      },
+      {
+        "coord": "BP3",
+        "formula": "=if(or(BN3 = 0,BO3 = 0),\"\",BN3 / BO3)"
+      },
+      {
+        "coord": "BU3",
+        "formula": "=if(or(BR3 = 0,BT3 = 0,BO3 = 0),\"\",(BR3 + BT3) / BO3)"
+      },
+      {
+        "coord": "BV3",
+        "formula": "=if(or(BQ3 = 0,BS3 = 0,BL3 = 0),\"\",(BQ3 + BS3) / BL3)"
+      },
+      {
+        "coord": "BW3",
+        "formula": "=if(or(BT3 = 0,BO3 = 0),\"\",BT3 / BO3)"
+      },
+      {
+        "coord": "BX3",
+        "formula": "=if(or(BS3 = 0,BL3 = 0),\"\",BS3 / BL3)"
+      },
+      {
+        "coord": "N4",
+        "formula": "=COUNT(UNIQUEARRAY(SPLIT(JOINARRAY(L3,\",\"),\",\")))"
+      },
+      {
+        "coord": "O4",
+        "formula": "=COUNT(UNIQUEARRAY(GREPARRAY(SPLIT(JOINARRAY(M3,\",\"),\",\"),LEN(item) > 0)))"
+      },
+      {
+        "coord": "P4",
+        "formula": "=if(or(O4 = 0,N4 = 0),\"\",O4 / N4)"
+      },
+      {
+        "coord": "Y4",
+        "formula": "=sum(Y3)"
+      },
+      {
+        "coord": "Z4",
+        "formula": "=if(or(Y4 = 0),\"\",X4/Y4)"
+      },
+      {
+        "coord": "AG4",
+        "formula": "=if(or(AE4 = 0,AF4 = 0),\"\",AE4 / AF4)"
+      },
+      {
+        "coord": "AJ4",
+        "formula": "=if(or(AH4 = 0,AI4 = 0),\"\",AH4 / AI4)"
+      },
+      {
+        "coord": "AP4",
+        "formula": "=if(or(AO4 = 0,AM4 = 0),\"\",AO4 / AM4)"
+      },
+      {
+        "coord": "BA4",
+        "formula": "=if(or(AY4 = 0,AW4 = 0),\"\",AY4 / AW4)"
+      },
+      {
+        "coord": "BB4",
+        "formula": "=if(or(AZ4 = 0,AX4 = 0),\"\",AZ4 / AX4)"
+      },
+      {
+        "coord": "BE4",
+        "formula": "=if(or(BC4 = 0,BD4 = 0),\"\",BC4 / BD4)"
+      },
+      {
+        "coord": "BH4",
+        "formula": "=if(or(BG4 = 0,BF4 = 0),\"\",BG4 / BF4)"
+      },
+      {
+        "coord": "BM4",
+        "formula": "=if(or(BK4 = 0,BL4 = 0),\"\",BK4 / BL4)"
+      },
+      {
+        "coord": "BP4",
+        "formula": "=if(or(BN4 = 0,BO4 = 0),\"\",BN4 / BO4)"
+      },
+      {
+        "coord": "BU4",
+        "formula": "=if(or(BR4 = 0,BT4 = 0,BO4 = 0),\"\",(BR4 + BT4) / BO4)"
+      },
+      {
+        "coord": "BV4",
+        "formula": "=if(or(BQ4 = 0,BS4 = 0,BL4 = 0),\"\",(BQ4 + BS4) / BL4)"
+      },
+      {
+        "coord": "BW4",
+        "formula": "=if(or(BT4 = 0,BO4 = 0),\"\",BT4 / BO4)"
+      },
+      {
+        "coord": "BX4",
+        "formula": "=if(or(BS4 = 0,BL4 = 0),\"\",BS4 / BL4)"
+      }
+    ],
+    "highlights": [
+      {
+        "coord": "D2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"1\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "E2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_show_country = '1'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "F2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"0\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "G2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"0\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "K2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"1\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "N2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_show_country = '1'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "O2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_show_country = '1'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "P2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_show_country = '1'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "Q2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"0\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "R2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"0\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "S2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"0\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "T2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"0\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "W2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"0\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "X2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_show_country = '5'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "Y2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_show_country = '5'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "Z2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_show_country = '5'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "AA2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"0\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "AC2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"1\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "AD2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\">\n<JoinCondition join=\"1\">\n<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n"
+      },
+      {
+        "coord": "W4",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_show_country = '2'</Formula>\n</Condition>\n"
+      }
+    ]
+  },
+  "us_sales_simple": {
+    "name": "us_sales_simple",
+    "path": "D:\\data-fill-system\\frReport\\6278e504-1b94-4dcf-bb0d-a554d8649a46\\美鹰集团报表\\01生产环境\\02.供应链管理\\02.订单计划-美线\\07美线销量简表.cpt",
+    "datasets": [
+      {
+        "name": "销量周报",
+        "query_preview": "WITH base_summary AS ( SELECT      report_wek_chr,     report_sort,    bu,    a.third_sort_desc,    \tcase warehouse_type \twhen 'MY' then 1 \twhen 'SP' then 2 \twhen 'WFS' then 3 \twhen 'CG' then 4 \twhen "
+      },
+      {
+        "name": "销售预估",
+        "query_preview": "WITH sku_sales AS ( SELECT a.report_date_char, a.pred_month_desc, b.product_id, b.sku, SUM(a.pred_sale_qty_by_pred) AS pred_sale_qty_by_pred, SUM(a.pred_sale_qty_by_weighted) AS pred_sale_qty_by_weigh"
+      },
+      {
+        "name": "超库龄数量",
+        "query_preview": "select sku,sum(st_91_max)st_91_max from ads.ads_log_whm_overagestock_ana_day t1 left join dim.dim_country t3 on t1.country = t3.country_name_zh CROSS JOIN etl_manage.fn_auth_context('${fine_username}'"
+      }
+    ],
+    "parameters": [
+      "v_second_sort_desc",
+      "v_spu",
+      "v_first_sort_desc",
+      "v_third_sort_desc",
+      "v_product_id",
+      "v_sku",
+      "v_report_date",
+      "v_bu",
+      "v_warehouse_type",
+      "fine_username",
+      "fine_role",
+      "l_warehouse_type",
+      "let_char"
+    ],
+    "cell_count": 94,
+    "expand_cells": [
+      {
+        "coord": "E3",
+        "direction": "不扩展",
+        "left": "B3",
+        "top": null
+      },
+      {
+        "coord": "H3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "I3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "J3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "K3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "L3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "M3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "N3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "O3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "P3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "Q3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "R3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "S3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "T3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "U3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "V3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "W3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "X3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "Y3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "Z3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "AA3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "AB3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "AC3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "AD3",
+        "direction": "不扩展",
+        "left": "AA3",
+        "top": null
+      },
+      {
+        "coord": "AE3",
+        "direction": "不扩展",
+        "left": "AA3",
+        "top": null
+      },
+      {
+        "coord": "AF3",
+        "direction": "不扩展",
+        "left": "C3",
+        "top": null
+      },
+      {
+        "coord": "D4",
+        "direction": "不扩展",
+        "left": "B4",
+        "top": null
+      },
+      {
+        "coord": "E4",
+        "direction": "不扩展",
+        "left": "B3",
+        "top": null
+      },
+      {
+        "coord": "H4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "I4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "J4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "K4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "L4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "M4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "N4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "O4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "P4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "Q4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "R4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "S4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "T4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "U4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "V4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "W4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "X4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "Y4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AA4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AC4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AE4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      }
+    ],
+    "formulas": [
+      {
+        "coord": "H2",
+        "formula": "=IF(ISNULL($v_warehouse_type) || $v_warehouse_type = \"\" || FIND(\",\",$v_warehouse_type) > 0,\"总库存\",\"库存\")"
+      },
+      {
+        "coord": "I2",
+        "formula": "=IF(ISNULL($v_warehouse_type) || $v_warehouse_type = \"\" || FIND(\",\",$v_warehouse_type) > 0,\"总7天销量\",\"7天销量\")"
+      },
+      {
+        "coord": "L2",
+        "formula": "=IF(ISNULL($v_warehouse_type) || $v_warehouse_type = \"\" || FIND(\",\",$v_warehouse_type) > 0,\"总日均加权销量\",\"日均加权销量\")"
+      },
+      {
+        "coord": "M2",
+        "formula": "=IF(ISNULL($v_warehouse_type) || $v_warehouse_type = \"\" || FIND(\",\",$v_warehouse_type) > 0,\"总库存可持续天数\",\"仓库可持续天数\")"
+      },
+      {
+        "coord": "N2",
+        "formula": "=IF(ISNULL($v_warehouse_type) || $v_warehouse_type = \"\" || FIND(\",\",$v_warehouse_type) > 0,\"总海上在途数量\",\"在途数量\")"
+      },
+      {
+        "coord": "O2",
+        "formula": "=IF(ISNULL($v_warehouse_type) || $v_warehouse_type = \"\" || FIND(\",\",$v_warehouse_type) > 0,\"总海上持续天数\",\"海上持续天数\")"
+      },
+      {
+        "coord": "Q2",
+        "formula": "=IF(ISNULL($v_warehouse_type) || $v_warehouse_type = \"\" || FIND(\",\",$v_warehouse_type) > 0,\"总本周出货\",\"本周出货\")"
+      },
+      {
+        "coord": "M3",
+        "formula": "=IF(sum(K3) = 0,'',SUM(H3) / sum(K3))"
+      },
+      {
+        "coord": "O3",
+        "formula": "=IF(sum(K3) = 0,'',SUM(N3) / SUM(K3))"
+      },
+      {
+        "coord": "P3",
+        "formula": "=round(SUM(M3),0) + round(SUM(O3),0)"
+      },
+      {
+        "coord": "U3",
+        "formula": "=IF(sum(K3) = 0,'',SUM(S3) / SUM(K3))"
+      },
+      {
+        "coord": "V3",
+        "formula": "=sum(H3) + sum(N3)"
+      },
+      {
+        "coord": "Y3",
+        "formula": "=if(or(SUM(X3) = 0,SUM(W3) = 0),\"\",if(SUM(V3) >= SUM(X3) * 1.2,\"积压\",if(SUM(V3) >= SUM(X3) * 1.1,\"积压预警\",if(SUM(V3) >= SUM(W3),\"正常\",if(SUM(V3) >= SUM(W3) * 0.9,\"缺货预警\",if(SUM(V3) >= SUM(W3) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "M4",
+        "formula": "=IF(sum(K4) = 0,'',SUM(H4) / sum(K4))"
+      },
+      {
+        "coord": "O4",
+        "formula": "=IF(sum(K4) = 0,'',SUM(N4) / SUM(K4))"
+      },
+      {
+        "coord": "P4",
+        "formula": "=round(SUM(M4),0) + round(SUM(O4),0)"
+      },
+      {
+        "coord": "R4",
+        "formula": "=sum(R3)"
+      },
+      {
+        "coord": "S4",
+        "formula": "=sum(S3)"
+      },
+      {
+        "coord": "U4",
+        "formula": "=IF(sum(K4) = 0,'',SUM(S4) / SUM(K4))"
+      },
+      {
+        "coord": "V4",
+        "formula": "=sum(H4) + sum(N4)"
+      },
+      {
+        "coord": "Y4",
+        "formula": "=if(or(SUM(X4) = 0,SUM(W4) = 0),\n\"\",\nif(SUM(V4) >= SUM(X4) * 1.2,\n\"积压\",\nif(SUM(V4) >= SUM(X4) * 1.1,\n\"积压预警\",\nif(SUM(V4) >= SUM(W4),\n\"正常\",\nif(SUM(V4) >= SUM(W4) * 0.9,\n\"缺货预警\",\nif(SUM(V4) >= SUM(W4) * 0.5,\n\"缺货\",\n\"断货\"))))))"
+      },
+      {
+        "coord": "Z4",
+        "formula": "=sum(Z3)"
+      },
+      {
+        "coord": "AD4",
+        "formula": "=SUM(AD3)"
+      },
+      {
+        "coord": "AE4",
+        "formula": "=SUM(AE3)"
+      }
+    ],
+    "highlights": [
+      {
+        "coord": "J2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "K2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "L2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type = 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "R2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "S2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "T2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "U2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "V2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != \"MY,SP,FBA,FBT,WFS,CG\"</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "W2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != \"MY,SP,FBA,FBT,WFS,CG\"</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "X2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != \"MY,SP,FBA,FBT,WFS,CG\"</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "Y2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != \"MY,SP,FBA,FBT,WFS,CG\"</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "Z2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "AA2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "AB2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "AC2",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "J3",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      },
+      {
+        "coord": "Y3",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.ListCondition\" />\n"
+      },
+      {
+        "coord": "J4",
+        "name": "条件属性1",
+        "condition_preview": "<Condition class=\"com.fr.data.condition.FormulaCondition\">\n<Formula>\n$v_warehouse_type != 'MY,SP,FBA,FBT,WFS,CG'</Formula>\n</Condition>\n"
+      }
+    ]
+  },
+  "us_category_simple": {
+    "name": "us_category_simple",
+    "path": "D:\\data-fill-system\\frReport\\81072ca9-501e-4e2a-bf74-fb73c688ef45\\美鹰集团报表\\01生产环境\\02.供应链管理\\02.订单计划-美线\\02美线品类简表.cpt",
+    "datasets": [
+      {
+        "name": "销量周报",
+        "query_preview": "SELECT      report_wek_chr,     report_sort,    bu,    a.third_sort_desc,    \tcase warehouse_type \twhen 'MY' then 1 \twhen 'SP' then 2 \twhen 'WFS' then 3 \twhen 'CG' then 4 \twhen 'FBA' then 5 \telse 9 en"
+      },
+      {
+        "name": "销售预估",
+        "query_preview": "WITH sku_sales AS ( SELECT a.report_date_char, a.pred_month_desc, b.product_id, b.sku, SUM(a.pred_sale_qty_by_pred) AS pred_sale_qty_by_pred, SUM(a.pred_sale_qty_by_weighted) AS pred_sale_qty_by_weigh"
+      },
+      {
+        "name": "超库龄数量",
+        "query_preview": "select sku,sum(st_91_max)st_91_max from ads.ads_log_whm_overagestock_ana_day t1 left join dim.dim_country t3 on t1.country = t3.country_name_zh CROSS JOIN etl_manage.fn_auth_context('${fine_username}'"
+      }
+    ],
+    "parameters": [
+      "v_second_sort_desc",
+      "v_spu",
+      "v_first_sort_desc",
+      "v_third_sort_desc",
+      "v_product_id",
+      "v_sku",
+      "v_report_date",
+      "v_bu",
+      "s_read_permission",
+      "fine_username",
+      "fine_role"
+    ],
+    "cell_count": 533,
+    "expand_cells": [
+      {
+        "coord": "G4",
+        "direction": "不扩展",
+        "left": "B4",
+        "top": null
+      },
+      {
+        "coord": "I4",
+        "direction": "不扩展",
+        "left": "C4",
+        "top": null
+      },
+      {
+        "coord": "L4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "M4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "N4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "O4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "P4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "Q4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "R4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "S4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "T4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "U4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "V4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "W4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "X4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "Y4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "Z4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AB4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AC4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AD4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AE4",
+        "direction": "不扩展",
+        "left": "AD4",
+        "top": null
+      },
+      {
+        "coord": "AF4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AG4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AH4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AI4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AJ4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AK4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AL4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AM4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AN4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AO4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AP4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AQ4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AR4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AS4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AT4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AU4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AV4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AW4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AX4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "AY4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "AZ4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BA4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "BB4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "BC4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "BD4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BE4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "BF4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BG4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BI4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BJ4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BK4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BL4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "BM4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BN4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "BO4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "BP4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "BQ4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BR4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "BS4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BT4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BU4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BV4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BW4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BX4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "BY4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "BZ4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CA4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CB4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CC4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CD4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CE4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CF4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CG4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CH4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CI4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CJ4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CK4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CL4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CM4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CN4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CO4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CP4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CQ4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CR4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CS4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CT4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CU4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CV4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CW4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CX4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "CY4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "CZ4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "DA4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "DB4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "DC4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "DD4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "DE4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "DF4",
+        "direction": "不扩展",
+        "left": "E4",
+        "top": null
+      },
+      {
+        "coord": "DG4",
+        "direction": "不扩展",
+        "left": "D4",
+        "top": null
+      },
+      {
+        "coord": "F5",
+        "direction": "不扩展",
+        "left": "B5",
+        "top": null
+      },
+      {
+        "coord": "G5",
+        "direction": "不扩展",
+        "left": "B4",
+        "top": null
+      },
+      {
+        "coord": "L5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "M5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "N5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "O5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "P5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "Q5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "R5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "S5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "T5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "U5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "V5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "W5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "X5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "Y5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "Z5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AA5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AB5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AC5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AD5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AE5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AF5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AG5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AH5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AI5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AJ5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AK5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AL5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AM5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AN5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AO5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AP5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AQ5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AR5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AS5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AT5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AU5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AV5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AW5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AX5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AY5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "AZ5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BA5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BB5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BC5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BD5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BE5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BF5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BG5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BH5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BI5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BJ5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BK5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BL5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BM5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BN5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BO5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BP5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BQ5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BR5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BS5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BT5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BU5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BV5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BW5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BX5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BY5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "BZ5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CA5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CB5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CC5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CD5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CE5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CF5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CG5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CH5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CI5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CJ5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CK5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CL5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CM5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CN5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CO5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CP5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CQ5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CR5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CS5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CT5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CU5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CV5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CW5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CX5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CY5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "CZ5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "DA5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "DB5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "DC5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "DD5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "DE5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "DF5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "DG5",
+        "direction": "不扩展",
+        "left": "G5",
+        "top": null
+      },
+      {
+        "coord": "F6",
+        "direction": "不扩展",
+        "left": "A4",
+        "top": null
+      },
+      {
+        "coord": "L6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "M6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "N6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "O6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "P6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "Q6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "R6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "S6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "T6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "U6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "V6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "W6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "X6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "Y6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "Z6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AA6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AB6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AC6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AD6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AE6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AF6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AG6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AH6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AI6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AJ6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AK6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AL6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AM6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AN6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AO6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AP6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AQ6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AR6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AS6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AT6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AU6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AV6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AW6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AX6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AY6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "AZ6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BA6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BB6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BC6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BD6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BE6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BF6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BG6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BH6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BI6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BJ6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BK6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BL6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BM6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BN6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BO6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BP6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BQ6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BR6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BS6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BT6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BU6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BV6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BW6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BX6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BY6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "BZ6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CA6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CB6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CC6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CD6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CE6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CF6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CG6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CH6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CI6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CJ6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CK6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CL6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CM6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CN6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CO6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CP6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CQ6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CR6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CS6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CT6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CU6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CV6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CW6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CX6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CY6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "CZ6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "DA6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "DB6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "DC6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "DD6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "DE6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "DF6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      },
+      {
+        "coord": "DG6",
+        "direction": "不扩展",
+        "left": "F6",
+        "top": null
+      }
+    ],
+    "formulas": [
+      {
+        "coord": "O4",
+        "formula": "=IF(sum(N4) = 0,'',SUM(L4) / sum(N4))"
+      },
+      {
+        "coord": "Q4",
+        "formula": "=IF(sum(N4) = 0,'',SUM(P4) / SUM(N4))"
+      },
+      {
+        "coord": "R4",
+        "formula": "=round(SUM(O4),0) + round(SUM(Q4),0)"
+      },
+      {
+        "coord": "V4",
+        "formula": "=IF(sum(N4) = 0,'',SUM(T4) / SUM(N4))"
+      },
+      {
+        "coord": "W4",
+        "formula": "=sum(L4) + sum(P4)"
+      },
+      {
+        "coord": "X4",
+        "formula": "=SUM(BC4) + SUM(BP4) + SUM(CB4) + SUM(CO4) + SUM(DB4)"
+      },
+      {
+        "coord": "Y4",
+        "formula": "=round(SUM(BE4),0) + round(SUM(BR4),0) + round(SUM(CD4),0) + round(SUM(CQ4),0) + round(SUM(DD4),0)"
+      },
+      {
+        "coord": "Z4",
+        "formula": "=IF(OR(SUM(Y4) = 0,SUM(X4) = 0),\"\",IF(SUM(W4) >= SUM(Y4) * 1.2,\"积压\",IF(SUM(W4) >= SUM(Y4) * 1.1,\"积压预警\",IF(SUM(W4) >= SUM(X4),\"正常\",IF(SUM(W4) >= SUM(X4) * 0.9,\"缺货预警\",IF(SUM(W4) >= SUM(X4) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "AH4",
+        "formula": "=SUM(AF4) + SUM(AG4)"
+      },
+      {
+        "coord": "AI4",
+        "formula": "=SUM(BC4) + SUM(BP4)"
+      },
+      {
+        "coord": "AJ4",
+        "formula": "=SUM(BD4) + SUM(BQ4)"
+      },
+      {
+        "coord": "AK4",
+        "formula": "=SUM(BE4) + SUM(BR4)"
+      },
+      {
+        "coord": "AL4",
+        "formula": "=SUM(BF4) + SUM(BS4)"
+      },
+      {
+        "coord": "AM4",
+        "formula": "=IF(OR(SUM(AK4) = 0,SUM(AI4) = 0),\"\",IF(SUM(AH4) >= SUM(AK4) * 1.2,\"积压\",IF(SUM(AH4) >= SUM(AK4) * 1.1,\"积压预警\",IF(SUM(AH4) >= SUM(AI4),\"正常\",IF(SUM(AH4) >= SUM(AI4) * 0.9,\"缺货预警\",IF(SUM(AH4) >= SUM(AI4) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "AP4",
+        "formula": "=SUM(AN4) + SUM(AO4)"
+      },
+      {
+        "coord": "AQ4",
+        "formula": "=SUM(CB4) + SUM(CO4) + SUM(DB4)"
+      },
+      {
+        "coord": "AR4",
+        "formula": "=SUM(CC4) + SUM(CP4) + SUM(DC4)"
+      },
+      {
+        "coord": "AS4",
+        "formula": "=SUM(CD4) + SUM(CQ4) + SUM(DD4)"
+      },
+      {
+        "coord": "AT4",
+        "formula": "=SUM(CE4) + SUM(CR4) + SUM(DE4)"
+      },
+      {
+        "coord": "AU4",
+        "formula": "=IF(OR(SUM(AS4) = 0,SUM(AQ4) = 0),\"\",IF(SUM(AP4) >= SUM(AS4) * 1.2,\"积压\",IF(SUM(AP4) >= SUM(AS4) * 1.1,\"积压预警\",IF(SUM(AP4) >= SUM(AQ4),\"正常\",IF(SUM(AP4) >= SUM(AQ4) * 0.9,\"缺货预警\",IF(SUM(AP4) >= SUM(AQ4) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "AY4",
+        "formula": "=IF(sum(AX4) = 0,'',SUM(AV4) / SUM(AX4))"
+      },
+      {
+        "coord": "BA4",
+        "formula": "=IF(sum(AX4) = 0,'',SUM(AZ4) / SUM(AX4))"
+      },
+      {
+        "coord": "BB4",
+        "formula": "=round(SUM(AY4),0) + round(SUM(BA4),0)"
+      },
+      {
+        "coord": "BL4",
+        "formula": "=IF(sum(BK4) = 0,'',SUM(BI4) / SUM(BK4))"
+      },
+      {
+        "coord": "BN4",
+        "formula": "=IF(sum(BK4) = 0,'',SUM(BM4) / SUM(BK4))"
+      },
+      {
+        "coord": "BO4",
+        "formula": "=round(SUM(BL4),0) + round(SUM(BN4),0)"
+      },
+      {
+        "coord": "BX4",
+        "formula": "=IF(sum(BW4) = 0,'',SUM(BU4) / SUM(BW4))"
+      },
+      {
+        "coord": "BZ4",
+        "formula": "=IF(sum(BW4) = 0,'',SUM(BY4) / SUM(BW4))"
+      },
+      {
+        "coord": "CA4",
+        "formula": "=round(SUM(BX4),0) + round(SUM(BZ4),0)"
+      },
+      {
+        "coord": "CG4",
+        "formula": "=IF(OR(SUM(CD4) = 0,SUM(CB4) = 0),\"\",IF(SUM(BU4) + SUM(BY4) >= SUM(CD4) * 1.2,\"积压\",IF(SUM(BU4) + SUM(BY4) >= SUM(CD4) * 1.1,\"积压预警\",IF(SUM(BU4) + SUM(BY4) >= SUM(CB4),\"正常\",IF(SUM(BU4) + SUM(BY4) >= SUM(CB4) * 0.9,\"缺货预警\",IF(SUM(BU4) + SUM(BY4) >= SUM(CB4) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "CK4",
+        "formula": "=IF(sum(CJ4) = 0,'',SUM(CH4) / SUM(CJ4))"
+      },
+      {
+        "coord": "CM4",
+        "formula": "=IF(sum(CJ4) = 0,'',SUM(CL4) / SUM(CJ4))"
+      },
+      {
+        "coord": "CN4",
+        "formula": "=round(SUM(CK4),0) + round(SUM(CM4),0)"
+      },
+      {
+        "coord": "CT4",
+        "formula": "=IF(OR(SUM(CQ4) = 0,SUM(CO4) = 0),\"\",IF(SUM(CH4) + SUM(CL4) >= SUM(CQ4) * 1.2,\"积压\",IF(SUM(CH4) + SUM(CL4) >= SUM(CQ4) * 1.1,\"积压预警\",IF(SUM(CH4) + SUM(CL4) >= SUM(CO4),\"正常\",IF(SUM(CH4) + SUM(CL4) >= SUM(CO4) * 0.9,\"缺货预警\",IF(SUM(CH4) + SUM(CL4) >= SUM(CO4) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "CX4",
+        "formula": "=IF(sum(CW4) = 0,'',SUM(CU4) / SUM(CW4))"
+      },
+      {
+        "coord": "CZ4",
+        "formula": "=IF(sum(CW4) = 0,'',SUM(CY4) / SUM(CW4))"
+      },
+      {
+        "coord": "DA4",
+        "formula": "=round(SUM(CX4),0) + round(SUM(CZ4),0)"
+      },
+      {
+        "coord": "DG4",
+        "formula": "=IF(OR(SUM(DB4) = 0,SUM(DD4) = 0),\"\",IF(SUM(CU4) + SUM(CY4) >= SUM(DD4) * 1.2,\"积压\",IF(SUM(CU4) + SUM(CY4) >= SUM(DD4) * 1.1,\"积压预警\",IF(SUM(CU4) + SUM(CY4) >= SUM(DB4),\"正常\",IF(SUM(CU4) + SUM(CY4) >= SUM(DB4) * 0.9,\"缺货预警\",IF(SUM(CU4) + SUM(CY4) >= SUM(DB4) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "O5",
+        "formula": "=IF(sum(N5) = 0,'',SUM(L5) / sum(N5))"
+      },
+      {
+        "coord": "Q5",
+        "formula": "=IF(sum(N5) = 0,'',SUM(P5) / SUM(N5))"
+      },
+      {
+        "coord": "R5",
+        "formula": "=round(SUM(O5),0) + round(SUM(Q5),0)"
+      },
+      {
+        "coord": "T5",
+        "formula": "=sum(T4)"
+      },
+      {
+        "coord": "V5",
+        "formula": "=IF(sum(N5) = 0,'',SUM(T5) / SUM(N5))"
+      },
+      {
+        "coord": "W5",
+        "formula": "=sum(L5) + sum(P5)"
+      },
+      {
+        "coord": "X5",
+        "formula": "=SUM(BC5) + SUM(BP5) + SUM(CB5) + SUM(CO5) + SUM(DB5)"
+      },
+      {
+        "coord": "Y5",
+        "formula": "=round(SUM(BE5),0) + round(SUM(BR5),0) + round(SUM(CD5),0) + round(SUM(CQ5),0) + round(SUM(DD5),0)"
+      },
+      {
+        "coord": "Z5",
+        "formula": "=IF(OR(SUM(Y5) = 0,SUM(X5) = 0),\"\",IF(SUM(W5) >= SUM(Y5) * 1.2,\"积压\",IF(SUM(W5) >= SUM(Y5) * 1.1,\"积压预警\",IF(SUM(W5) >= SUM(X5),\"正常\",IF(SUM(W5) >= SUM(X5) * 0.9,\"缺货预警\",IF(SUM(W5) >= SUM(X5) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "AB5",
+        "formula": "=sum(AB4)"
+      },
+      {
+        "coord": "AC5",
+        "formula": "=sum(AC4)"
+      },
+      {
+        "coord": "AE5",
+        "formula": "=SUM(AE4)"
+      },
+      {
+        "coord": "AH5",
+        "formula": "=SUM(AF5) + SUM(AG5)"
+      },
+      {
+        "coord": "AI5",
+        "formula": "=SUM(BC5) + SUM(BP5)"
+      },
+      {
+        "coord": "AK5",
+        "formula": "=SUM(BE5) + SUM(BR5)"
+      },
+      {
+        "coord": "AM5",
+        "formula": "=IF(OR(SUM(AK5) = 0,SUM(AI5) = 0),\"\",IF(SUM(AH5) >= SUM(AK5) * 1.2,\"积压\",IF(SUM(AH5) >= SUM(AK5) * 1.1,\"积压预警\",IF(SUM(AH5) >= SUM(AI5),\"正常\",IF(SUM(AH5) >= SUM(AI5) * 0.9,\"缺货预警\",IF(SUM(AH5) >= SUM(AI5) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "AP5",
+        "formula": "=SUM(AN5) + SUM(AO5)"
+      },
+      {
+        "coord": "AQ5",
+        "formula": "=SUM(CB5) + SUM(CO5) + SUM(DB5)"
+      },
+      {
+        "coord": "AS5",
+        "formula": "=SUM(CD5) + SUM(CQ5) + SUM(DD5)"
+      },
+      {
+        "coord": "AU5",
+        "formula": "=IF(OR(SUM(AS5) = 0,SUM(AQ5) = 0),\"\",IF(SUM(AP5) >= SUM(AS5) * 1.2,\"积压\",IF(SUM(AP5) >= SUM(AS5) * 1.1,\"积压预警\",IF(SUM(AP5) >= SUM(AQ5),\"正常\",IF(SUM(AP5) >= SUM(AQ5) * 0.9,\"缺货预警\",IF(SUM(AP5) >= SUM(AQ5) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "AY5",
+        "formula": "=IF(sum(AX5) = 0,'',SUM(AV5) / SUM(AX5))"
+      },
+      {
+        "coord": "BA5",
+        "formula": "=IF(sum(AX5) = 0,'',SUM(AZ5) / SUM(AX5))"
+      },
+      {
+        "coord": "BB5",
+        "formula": "=round(SUM(AY5),0) + round(SUM(BA5),0)"
+      },
+      {
+        "coord": "BC5",
+        "formula": "=SUM(BC4)"
+      },
+      {
+        "coord": "BE5",
+        "formula": "=SUM(BE4)"
+      },
+      {
+        "coord": "BL5",
+        "formula": "=IF(sum(BK5) = 0,'',SUM(BI5) / SUM(BK5))"
+      },
+      {
+        "coord": "BN5",
+        "formula": "=IF(sum(BK5) = 0,'',SUM(BM5) / SUM(BK5))"
+      },
+      {
+        "coord": "BO5",
+        "formula": "=round(SUM(BL5),0) + round(SUM(BN5),0)"
+      },
+      {
+        "coord": "BP5",
+        "formula": "=SUM(BP4)"
+      },
+      {
+        "coord": "BR5",
+        "formula": "=SUM(BR4)"
+      },
+      {
+        "coord": "BX5",
+        "formula": "=IF(sum(BW5) = 0,'',SUM(BU5) / SUM(BW5))"
+      },
+      {
+        "coord": "BZ5",
+        "formula": "=IF(sum(BW5) = 0,'',SUM(BY5) / SUM(BW5))"
+      },
+      {
+        "coord": "CA5",
+        "formula": "=round(SUM(BX5),0) + round(SUM(BZ5),0)"
+      },
+      {
+        "coord": "CB5",
+        "formula": "=SUM(CB4)"
+      },
+      {
+        "coord": "CD5",
+        "formula": "=SUM(CD4)"
+      },
+      {
+        "coord": "CG5",
+        "formula": "=IF(OR(SUM(CD5) = 0,SUM(CB5) = 0),\"\",IF(SUM(BU5) + SUM(BY5) >= SUM(CD5) * 1.2,\"积压\",IF(SUM(BU5) + SUM(BY5) >= SUM(CD5) * 1.1,\"积压预警\",IF(SUM(BU5) + SUM(BY5) >= SUM(CB5),\"正常\",IF(SUM(BU5) + SUM(BY5) >= SUM(CB5) * 0.9,\"缺货预警\",IF(SUM(BU5) + SUM(BY5) >= SUM(CB5) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "CK5",
+        "formula": "=IF(sum(CJ5) = 0,'',SUM(CH5) / SUM(CJ5))"
+      },
+      {
+        "coord": "CM5",
+        "formula": "=IF(sum(CJ5) = 0,'',SUM(CL5) / SUM(CJ5))"
+      },
+      {
+        "coord": "CN5",
+        "formula": "=round(SUM(CK5),0) + round(SUM(CM5),0)"
+      },
+      {
+        "coord": "CO5",
+        "formula": "=SUM(CO4)"
+      },
+      {
+        "coord": "CQ5",
+        "formula": "=SUM(CQ4)"
+      },
+      {
+        "coord": "CT5",
+        "formula": "=IF(OR(SUM(CQ5) = 0,SUM(CO5) = 0),\"\",IF(SUM(CH5) + SUM(CL5) >= SUM(CQ5) * 1.2,\"积压\",IF(SUM(CH5) + SUM(CL5) >= SUM(CQ5) * 1.1,\"积压预警\",IF(SUM(CH5) + SUM(CL5) >= SUM(CO5),\"正常\",IF(SUM(CH5) + SUM(CL5) >= SUM(CO5) * 0.9,\"缺货预警\",IF(SUM(CH5) + SUM(CL5) >= SUM(CO5) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "CX5",
+        "formula": "=IF(sum(CW5) = 0,'',SUM(CU5) / SUM(CW5))"
+      },
+      {
+        "coord": "CZ5",
+        "formula": "=IF(sum(CW5) = 0,'',SUM(CY5) / SUM(CW5))"
+      },
+      {
+        "coord": "DA5",
+        "formula": "=round(SUM(CX5),0) + round(SUM(CZ5),0)"
+      },
+      {
+        "coord": "DB5",
+        "formula": "=SUM(DB4)"
+      },
+      {
+        "coord": "DD5",
+        "formula": "=SUM(DD4)"
+      },
+      {
+        "coord": "DG5",
+        "formula": "=IF(OR(SUM(DB5) = 0,SUM(DD5) = 0),\"\",IF(SUM(CU5) + SUM(CY5) >= SUM(DD5) * 1.2,\"积压\",IF(SUM(CU5) + SUM(CY5) >= SUM(DD5) * 1.1,\"积压预警\",IF(SUM(CU5) + SUM(CY5) >= SUM(DB5),\"正常\",IF(SUM(CU5) + SUM(CY5) >= SUM(DB5) * 0.9,\"缺货预警\",IF(SUM(CU5) + SUM(CY5) >= SUM(DB5) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "O6",
+        "formula": "=IF(sum(N6) = 0,'',SUM(L6) / sum(N6))"
+      },
+      {
+        "coord": "Q6",
+        "formula": "=IF(sum(N6) = 0,'',SUM(P6) / SUM(N6))"
+      },
+      {
+        "coord": "R6",
+        "formula": "=round(SUM(O6),0) + round(SUM(Q6),0)"
+      },
+      {
+        "coord": "T6",
+        "formula": "=SUM(T4)"
+      },
+      {
+        "coord": "V6",
+        "formula": "=IF(sum(N6) = 0,'',SUM(T6) / SUM(N6))"
+      },
+      {
+        "coord": "W6",
+        "formula": "=sum(L6) + sum(P6)"
+      },
+      {
+        "coord": "X6",
+        "formula": "=SUM(BC6) + SUM(BP6) + SUM(CB6) + SUM(CO6) + SUM(DB6)"
+      },
+      {
+        "coord": "Y6",
+        "formula": "=round(SUM(BE6),0) + round(SUM(BR6),0) + round(SUM(CD6),0) + round(SUM(CQ6),0) + round(SUM(DD6),0)"
+      },
+      {
+        "coord": "Z6",
+        "formula": "=IF(OR(SUM(Y6) = 0,SUM(X6) = 0),\"\",IF(SUM(W6) >= SUM(Y6) * 1.2,\"积压\",IF(SUM(W6) >= SUM(Y6) * 1.1,\"积压预警\",IF(SUM(W6) >= SUM(X6),\"正常\",IF(SUM(W6) >= SUM(X6) * 0.9,\"缺货预警\",IF(SUM(W6) >= SUM(X6) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "AB6",
+        "formula": "=sum(AB4)"
+      },
+      {
+        "coord": "AC6",
+        "formula": "=sum(AC4)"
+      },
+      {
+        "coord": "AE6",
+        "formula": "=SUM(AE4)"
+      },
+      {
+        "coord": "AH6",
+        "formula": "=SUM(AF6) + SUM(AG6)"
+      },
+      {
+        "coord": "AI6",
+        "formula": "=SUM(BC6) + SUM(BP6)"
+      },
+      {
+        "coord": "AK6",
+        "formula": "=SUM(BE6) + SUM(BR6)"
+      },
+      {
+        "coord": "AM6",
+        "formula": "=IF(OR(SUM(AK6) = 0,SUM(AI6) = 0),\"\",IF(SUM(AH6) >= SUM(AK6) * 1.2,\"积压\",IF(SUM(AH6) >= SUM(AK6) * 1.1,\"积压预警\",IF(SUM(AH6) >= SUM(AI6),\"正常\",IF(SUM(AH6) >= SUM(AI6) * 0.9,\"缺货预警\",IF(SUM(AH6) >= SUM(AI6) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "AP6",
+        "formula": "=SUM(AN6) + SUM(AO6)"
+      },
+      {
+        "coord": "AQ6",
+        "formula": "=SUM(CB6) + SUM(CO6) + SUM(DB6)"
+      },
+      {
+        "coord": "AS6",
+        "formula": "=SUM(CD6) + SUM(CQ6) + SUM(DD6)"
+      },
+      {
+        "coord": "AU6",
+        "formula": "=IF(OR(SUM(AS6) = 0,SUM(AQ6) = 0),\"\",IF(SUM(AP6) >= SUM(AS6) * 1.2,\"积压\",IF(SUM(AP6) >= SUM(AS6) * 1.1,\"积压预警\",IF(SUM(AP6) >= SUM(AQ6),\"正常\",IF(SUM(AP6) >= SUM(AQ6) * 0.9,\"缺货预警\",IF(SUM(AP6) >= SUM(AQ6) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "AY6",
+        "formula": "=IF(sum(AX6) = 0,'',SUM(AV6) / SUM(AX6))"
+      },
+      {
+        "coord": "BA6",
+        "formula": "=IF(sum(AX6) = 0,'',SUM(AZ6) / SUM(AX6))"
+      },
+      {
+        "coord": "BB6",
+        "formula": "=round(SUM(AY6),0) + round(SUM(BA6),0)"
+      },
+      {
+        "coord": "BC6",
+        "formula": "=SUM(BC4)"
+      },
+      {
+        "coord": "BE6",
+        "formula": "=SUM(BE4)"
+      },
+      {
+        "coord": "BL6",
+        "formula": "=IF(sum(BK6) = 0,'',SUM(BI6) / SUM(BK6))"
+      },
+      {
+        "coord": "BN6",
+        "formula": "=IF(sum(BK6) = 0,'',SUM(BM6) / SUM(BK6))"
+      },
+      {
+        "coord": "BO6",
+        "formula": "=round(SUM(BL6),0) + round(SUM(BN6),0)"
+      },
+      {
+        "coord": "BP6",
+        "formula": "=SUM(BP4)"
+      },
+      {
+        "coord": "BR6",
+        "formula": "=SUM(BR4)"
+      },
+      {
+        "coord": "BX6",
+        "formula": "=IF(sum(BW6) = 0,'',SUM(BU6) / SUM(BW6))"
+      },
+      {
+        "coord": "BZ6",
+        "formula": "=IF(sum(BW6) = 0,'',SUM(BY6) / SUM(BW6))"
+      },
+      {
+        "coord": "CA6",
+        "formula": "=round(SUM(BX6),0) + round(SUM(BZ6),0)"
+      },
+      {
+        "coord": "CB6",
+        "formula": "=SUM(CB4)"
+      },
+      {
+        "coord": "CD6",
+        "formula": "=SUM(CD4)"
+      },
+      {
+        "coord": "CG6",
+        "formula": "=IF(OR(SUM(CD6) = 0,SUM(CB6) = 0),\"\",IF(SUM(BU6) + SUM(BY6) >= SUM(CD6) * 1.2,\"积压\",IF(SUM(BU6) + SUM(BY6) >= SUM(CD6) * 1.1,\"积压预警\",IF(SUM(BU6) + SUM(BY6) >= SUM(CB6),\"正常\",IF(SUM(BU6) + SUM(BY6) >= SUM(CB6) * 0.9,\"缺货预警\",IF(SUM(BU6) + SUM(BY6) >= SUM(CB6) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "CK6",
+        "formula": "=IF(sum(CJ6) = 0,'',SUM(CH6) / SUM(CJ6))"
+      },
+      {
+        "coord": "CM6",
+        "formula": "=IF(sum(CJ6) = 0,'',SUM(CL6) / SUM(CJ6))"
+      },
+      {
+        "coord": "CN6",
+        "formula": "=round(SUM(CK6),0) + round(SUM(CM6),0)"
+      },
+      {
+        "coord": "CO6",
+        "formula": "=SUM(CO4)"
+      },
+      {
+        "coord": "CQ6",
+        "formula": "=SUM(CQ4)"
+      },
+      {
+        "coord": "CT6",
+        "formula": "=IF(OR(SUM(CQ6) = 0,SUM(CO6) = 0),\"\",IF(SUM(CH6) + SUM(CL6) >= SUM(CQ6) * 1.2,\"积压\",IF(SUM(CH6) + SUM(CL6) >= SUM(CQ6) * 1.1,\"积压预警\",IF(SUM(CH6) + SUM(CL6) >= SUM(CO6),\"正常\",IF(SUM(CH6) + SUM(CL6) >= SUM(CO6) * 0.9,\"缺货预警\",IF(SUM(CH6) + SUM(CL6) >= SUM(CO6) * 0.5,\"缺货\",\"断货\"))))))"
+      },
+      {
+        "coord": "CX6",
+        "formula": "=IF(sum(CW6) = 0,'',SUM(CU6) / SUM(CW6))"
+      },
+      {
+        "coord": "CZ6",
+        "formula": "=IF(sum(CW6) = 0,'',SUM(CY6) / SUM(CW6))"
+      },
+      {
+        "coord": "DA6",
+        "formula": "=round(SUM(CX6),0) + round(SUM(CZ6),0)"
+      },
+      {
+        "coord": "DB6",
+        "formula": "=SUM(DB4)"
+      },
+      {
+        "coord": "DD6",
+        "formula": "=SUM(DD4)"
+      },
+      {
+        "coord": "DG6",
+        "formula": "=IF(OR(SUM(DB6) = 0,SUM(DD6) = 0),\"\",IF(SUM(CU6) + SUM(CY6) >= SUM(DD6) * 1.2,\"积压\",IF(SUM(CU6) + SUM(CY6) >= SUM(DD6) * 1.1,\"积压预警\",IF(SUM(CU6) + SUM(CY6) >= SUM(DB6),\"正常\",IF(SUM(CU6) + SUM(CY6) >= SUM(DB6) * 0.9,\"缺货预警\",IF(SUM(CU6) + SUM(CY6) >= SUM(DB6) * 0.5,\"缺货\",\"断货\"))))))"
+      }
+    ],
+    "highlights": []
+  }
+}

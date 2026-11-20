@@ -282,3 +282,25 @@ CREATE TABLE IF NOT EXISTS fr_role_sync_history (
     rollback_time   TIMESTAMP
 );
 CREATE INDEX IF NOT EXISTS idx_fr_sync_hist_time ON fr_role_sync_history(create_time DESC);
+
+-- 7. 飞书审批自动赋权/建号审计流水表：feishu_approval_audit_log
+CREATE TABLE IF NOT EXISTS feishu_approval_audit_log (
+    id                    VARCHAR(64) PRIMARY KEY,
+    instance_code         VARCHAR(100),
+    approval_name         VARCHAR(255),
+    apply_type            VARCHAR(100),
+    applicant_name        VARCHAR(100),
+    target_username       VARCHAR(100),
+    carrier_id            VARCHAR(100),
+    requested_items       TEXT,
+    newly_granted_items   TEXT,
+    already_granted_items TEXT,
+    unmapped_items        TEXT,
+    failed_items          TEXT,
+    status                VARCHAR(32),
+    message               TEXT,
+    notified_targets      TEXT,
+    create_time           TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_feishu_audit_inst ON feishu_approval_audit_log(instance_code);
+CREATE INDEX IF NOT EXISTS idx_feishu_audit_time ON feishu_approval_audit_log(create_time DESC);

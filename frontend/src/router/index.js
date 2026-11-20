@@ -69,6 +69,11 @@ const router = createRouter({
       path: '/finereport-roles',
       name: 'fineReportRoles',
       component: () => import('../views/FineReportRoleSync.vue')
+    },
+    {
+      path: '/cpt-workbench',
+      name: 'cptWorkbench',
+      component: () => import('../views/CptWorkbench.vue')
     }
   ]
 })
